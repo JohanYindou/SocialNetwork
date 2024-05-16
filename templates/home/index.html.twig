@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home
+{% endblock %}
+{% block body %}
+
+	<div
+		class="container-fluid d-flex flex-column vh-100 p-2">
+		<!-- Utilisez les classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
+		<div
+			class="row flex-grow-1">
+			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
+			<div
+				class="d-flex align-items-stretch">
+				<!-- Contenu des colonnes -->
+				<div
+					class="col-md-3 d-flex flex-column p-2 ">
+					<!-- Contenu de la première colonne -->
+					<ul class="list-unstyled flex-grow-1 p-4 m-4">
+						<a href="{{ path('app_home') }}"><li class="border border-white rounded mb-2 p-2">Logo</li></a>
+						
+						<a href="{{path('app_recherche')}}">
+							<li class="border border-white rounded mb-2  p-2">Recherche</li>
+						</a>
+						<a href="{{ path('app_notifications') }}">
+							<li class="border border-white rounded mb-2 p-2">Notifications</li>
+						</a>
+						
+						<a href="{{ path('app_messages') }}">
+							<li class="border border-white rounded mb-2 p-2">Messages</li>
+						</a>
+						<a href="{{ path('app_groupes') }}">
+							<li class="border border-white rounded mb-2 p-2">Groupes</li>
+						</a>
+						<a href="{{ path('app_reglages') }}">
+							<li class="border border-white rounded mb-2 p-2">Reglages</li>
+						</a>
+						<li class="border border-white rounded mb-2 p-2">
+								<a class="btn btn-primary" href="" role="button">Poster</a>
+						</li>
+						<li class="border border-white rounded mb-2 p-2">
+							<div
+								class="row align-items-center">
+								<!-- Utilisez une grille Bootstrap avec la classe "row" et "align-items-center" pour aligner les éléments sur la même ligne -->
+								<div
+									class="col-auto">
+									<!-- Utilisez une colonne Bootstrap avec la classe "col-auto" pour que la taille soit déterminée par le contenu -->
+									<a href="{{ path('app_profil') }}">
+										<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+									</a>
+								</div>
+								<div
+									class="col">
+									<!-- Utilisez une autre colonne Bootstrap pour les paragraphes -->
+									<a href="/profil" style="text-decoration: none; color: inherit;">
+										<p class="mb-0">John Doe</p>
+										<!-- Ajoutez la classe "mb-0" pour supprimer la marge en bas -->
+										<p class="mb-0">@JohnDoe</p>
+											<!-- Ajoutez la classe "mb-0" pour supprimer la marge en bas -->
+									</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div
+					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
+					<!-- Contenu de la deuxième colonne -->
+					<div>
+						<h3 class="align-self-center">Welcome Back, User !</h3>
+							<form action="">
+								<ul class="list-unstyled d-flex">
+									<li  class="p-2">
+										<a href="{{ path('app_profil') }}">
+											<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+										</a>
+									</li>
+									<li class="p-2">
+										<input type="text" class="form-control" placeholder="Quoi de neuf ?!">
+									</li>
+								</ul>
+								<button class="btn btn-primary m-2" type="submit">Poster</button>
+							</form>
+					</div>
+					<ul class="list-unstyled">
+                    <!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
+						
+						{% for publication in publications %}
+    
+        <div class="card">
+            <div class="card-header">
+                <a href="/profil" style="text-decoration: none; color: inherit;">
+                    <ul class="list-unstyled d-flex">
+                        <li class="p-2">
+                            <img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+                        </li>
+                        <li class="p-2">
+                            <p class="mb-0">{{ publication.auteur.nom }}</p>
+                            <p class="mb-0">@{{ publication.auteur.username }}</p>
+                        </li>
+						<li class="p-2 d-flex align-items-center">
+							<p>Posted on {{ publication.createdAt|date('d/m/Y') }} at {{ publication.createdAt|date('H:i') }}</p>
+						</li>
+                    </ul>
+                </a>
+            </div>
+			<a href="{{ path('app_post', {'id': publication.id}) }}" style="text-decoration: none; color: inherit;">
+				<div class="card-body">
+					<p>{{ publication.contenu }}</p>
+					<div class="d-flex justify-content-center align-items-center">
+						{% if publication.media %}
+							<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
+						{% endif %}
+					</div>
+				</div>
+				<div class="card-footer d-flex justify-content-center">
+					<div class="mx-4">
+						<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+							<i class="bi bi-chat"></i> Commentaires
+						</a>
+					</div>
+					<div  class="mx-4">
+						<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+							<i class="bi bi-heart"></i> Like
+						</a>
+					</div>
+					<div  class="mx-4">
+						<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+							<i class="bi bi-share"></i> Partager
+						</a>
+					</div>
+				</div>
+			</a>
+		</div>
+    
+{% endfor %}
+
+
+					</ul>
+				</div>
+				<div
+					class="col-md-3 d-flex flex-column p-2 ms-2">
+					
+					<div>
+						<form class="d-flex ms-2" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn btn-outline-success" type="submit">Search</button>
+						</form>
+					</div>
+					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
+						<h2>Tendances :</h2>
+						<ul class="list-unstyled ms-2">
+							<li class="mb-2">Item 1</li>
+							<li class="mb-2">Item 2</li>
+							<li class="mb-2">Item 3</li>
+							<li class="mb-2">Item 4</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
