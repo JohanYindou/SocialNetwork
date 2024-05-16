@@ -1,0 +1,37 @@
+<?php
+
+namespace App\Controller;
+
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\PublicationRepository;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+
+class PostsController extends AbstractController
+{
+    #[Route('/post/{id}', name: 'app_post')]
+    public function post(
+        Request $request,
+        PublicationRepository $publications,
+        EntityManagerInterface $em,
+    ): Response {
+        // // Récupérer l'utilisateur actuellement connecté
+        // $currentUser = $this->getUser();
+
+        // // Vérifier si l'utilisateur est authentifié
+        // if (!$currentUser) {
+        //     return $this->redirectToRoute('app_login');
+        //     throw $this->createNotFoundException('Utilisateur non connecté');
+        // }
+
+        $publicationId = $request->attributes->get('id'); // Get the ID from the route parameter
+        $publication = $publications->find($publicationId); // Find the publication by ID
+
+        return $this->render('posts/index.html.twig', [
+            'publication' => $publication, 
+        ]);
+    }
+}
+
