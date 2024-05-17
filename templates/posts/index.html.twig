@@ -131,7 +131,56 @@
                             </div>
                             
                             <!-- Section commentaire -->                        
-
+							<div class="card">
+								<ul class="list-group list-group-flush">
+								{% for commentaire in publication.commentaires %}
+									<li class="list-group-item">
+										<!-- Contenu du commentaire -->
+										<div class="">
+											<div>
+												<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+											</div>
+											<div>
+												<p>
+												{{commentaire.auteur.nom}}
+												</p>
+												<p>
+												{{commentaire.auteur.username}}
+												</p>
+												<p>
+												{{commentaire.createdAt|date('d/m/Y')}}
+												</p>
+												<p>
+												{{commentaire.createdAt|date('H:i')}}
+												</p>
+											</div>
+											<div>
+												<p>
+													{{commentaire.contenu}}
+												</p>
+											</div>
+										</div>
+										<div class="d-flex justify-content-center">
+											<div class="mx-4">
+												<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+													<i class="bi bi-chat"></i>
+												</a>
+											</div>
+											<div class="mx-4">
+												<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+													<i class="bi bi-heart"></i>
+												</a>
+											</div>
+											<div class="mx-4">
+												<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+													<i class="bi bi-share"></i>
+												</a>
+											</div>
+										</div>
+									</li>
+								{% endfor %}
+								</ul>
+							</div>
 					</ul>
 				</div>
 				<div
