@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CommentaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +33,16 @@ class PostsController extends AbstractController
         return $this->render('posts/index.html.twig', [
             'publication' => $publication, 
         ]);
+    }
+
+    #[Route('/comment/{id}', name: 'app_comment')]
+    public function comments(
+        Request $request,
+        PublicationRepository $publications,
+        EntityManagerInterface $em,
+        CommentaireRepository $comments,
+    ): Response {
+        return $this->render('posts/comment.html.twig');
     }
 }
 
