@@ -42,7 +42,11 @@ class PostsController extends AbstractController
         EntityManagerInterface $em,
         CommentaireRepository $comments,
     ): Response {
-        return $this->render('posts/comment.html.twig');
+        $comment = $comments->find($request->attributes->get('id'));
+        // Récupérer l'id de la route du commentaire  et l'afficher
+        return $this->render('posts/comment.html.twig', [
+            'comment' => $comment,
+        ]);
     }
 }
 

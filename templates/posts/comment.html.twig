@@ -1,19 +1,140 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GroupesController!{% endblock %}
-
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/jyind/Documents/Projets/SocialNetwork/src/Controller/GroupesController.php</code></li>
-        <li>Your template at <code>C:/Users/jyind/Documents/Projets/SocialNetwork/templates/groupes/index.html.twig</code></li>
-    </ul>
-</div>
+{% block title %}Comment
 {% endblock %}
+{% block body %}
+
+	<div
+		class="container-fluid d-flex flex-column vh-100 p-2">
+		<!-- Utilisez les classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
+		<div
+			class="row flex-grow-1">
+			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
+			<div
+				class="d-flex align-items-stretch">
+				<!-- Contenu des colonnes -->
+				<div
+					class="col-md-3 d-flex flex-column p-2 ">
+					<!-- Contenu de la première colonne -->
+					<ul class="list-unstyled flex-grow-1 p-4 m-4">
+						<a href="{{ path('app_home') }}">
+							<li class="border border-white rounded mb-2 p-2">Logo</li>
+						</a>
+
+						<a href="{{path('app_recherche')}}">
+							<li class="border border-white rounded mb-2  p-2">Recherche</li>
+						</a>
+						<a href="{{ path('app_notifications') }}">
+							<li class="border border-white rounded mb-2 p-2">Notifications</li>
+						</a>
+
+						<a href="{{ path('app_messages') }}">
+							<li class="border border-white rounded mb-2 p-2">Messages</li>
+						</a>
+						<a href="{{ path('app_groupes') }}">
+							<li class="border border-white rounded mb-2 p-2">Groupes</li>
+						</a>
+						<a href="{{ path('app_reglages') }}">
+							<li class="border border-white rounded mb-2 p-2">Reglages</li>
+						</a>
+						<li class="border border-white rounded mb-2 p-2">
+							<a class="btn btn-primary" href="" role="button">Poster</a>
+						</li>
+						<li class="border border-white rounded mb-2 p-2">
+							<div
+								class="row align-items-center">
+								<!-- Utilisez une grille Bootstrap avec la classe "row" et "align-items-center" pour aligner les éléments sur la même ligne -->
+								<div
+									class="col-auto">
+									<!-- Utilisez une colonne Bootstrap avec la classe "col-auto" pour que la taille soit déterminée par le contenu -->
+									<a href="{{ path('app_profil') }}">
+										<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+									</a>
+								</div>
+								<div
+									class="col">
+									<!-- Utilisez une autre colonne Bootstrap pour les paragraphes -->
+									<a href="/profil" style="text-decoration: none; color: inherit;">
+										<p class="mb-0">John Doe</p>
+										<!-- Ajoutez la classe "mb-0" pour supprimer la marge en bas -->
+										<p class="mb-0">@JohnDoe</p>
+										<!-- Ajoutez la classe "mb-0" pour supprimer la marge en bas -->
+									</a>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div
+					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
+					<!-- Contenu de la deuxième colonne -->
+					<ul
+						class="list-unstyled">
+						<!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
+						<!-- Section commentaire -->
+						<div class="card">
+							<ul class="list-group list-group-flush">
+									<a href="{{ path('app_comment', {'id': comment.id}) }}">
+										<li
+											class="list-group-item">
+											<!-- Contenu du commentaire -->
+											<div class="d-flex align-items-start">
+												<div>
+													<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+												</div>
+												<div class="ms-3 w-100">
+													<div class="d-flex justify-content-between align-items-center">
+														<div>
+															<strong>{{ comment.auteur.nom }}</strong>
+															<span class="text-muted">@{{ comment.auteur.username }}</span>
+														</div>
+														<div class="text-muted">
+															<small>{{ comment.createdAt|date('d/m/Y') }}
+																{{ comment.createdAt|date('H:i') }}</small>
+														</div>
+													</div>
+													<p class="mt-2">{{ comment.contenu }}</p>
+													<div class="d-flex justify-content-start">
+														<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
+															<i class="bi bi-chat"></i>
+														</a>
+														<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
+															<i class="bi bi-heart"></i>
+														</a>
+														<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+															<i class="bi bi-share"></i>
+														</a>
+													</div>
+												</div>
+											</div>
+										</li>
+									</a>
+							</ul>
+						</div>
+					</ul>
+				</div>
+				<div class="col-md-3 d-flex flex-column p-2 ms-2">
+
+					<div>
+						<form class="d-flex ms-2" role="search">
+							<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn btn-outline-success" type="submit">Search</button>
+						</form>
+					</div>
+					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
+						<h2>Tendances :</h2>
+						<ul class="list-unstyled ms-2">
+							<li class="mb-2">Item 1</li>
+							<li class="mb-2">Item 2</li>
+							<li class="mb-2">Item 3</li>
+							<li class="mb-2">Item 4</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+
+
