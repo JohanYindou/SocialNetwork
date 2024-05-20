@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home
+{% block title %}Post
 {% endblock %}
 {% block body %}
 
@@ -66,22 +66,6 @@
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
 					<!-- Contenu de la deuxième colonne -->
-					<div>
-						<h3 class="align-self-center">Welcome Back, User !</h3>
-							<form action="">
-								<ul class="list-unstyled d-flex">
-									<li  class="p-2">
-										<a href="{{ path('app_profil') }}">
-											<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-										</a>
-									</li>
-									<li class="p-2">
-										<input type="text" class="form-control" placeholder="Quoi de neuf ?!">
-									</li>
-								</ul>
-								<button class="btn btn-primary m-2" type="submit">Poster</button>
-							</form>
-					</div>
 					<ul class="list-unstyled">
                     <!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
                             <div class="card">
