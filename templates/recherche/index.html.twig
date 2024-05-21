@@ -73,7 +73,12 @@
 					</div>
 					<ul
 						class="list-unstyled">
-						{% if searchForm is defined %}
+						{% if searchTerm is null %}
+							<p>J'ai un gros problème</p>
+						{% else %}
+							<p>Il y a {{ publications|length }} publications correspondantes</p>
+						{% endif %}
+
 							{% for publication in publications %}
 								<div class="card">
 									<div class="card-header">
@@ -127,9 +132,9 @@
 									</a>
 								</div>
 							{% endfor %}
-						{% else %}
+						{# {% else %}
 							<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
-						{% endif %}
+						{% endif %} #}
 
 
 					</ul>
@@ -137,11 +142,11 @@
 				<div class="col-md-3 d-flex flex-column p-2 ms-2">
 					<!-- Contenu de la troisième colonne -->
 					<!-- La fonction recherche est pour l'instant gérée que par home-->
-					{# <div>
-						<form class="d-flex ms-2" role="search">
+					<div>
+						<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}">
 							{{ form(searchForm) }}
 						</form>
-					</div> #}
+					</div>
 					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
 						<h2>Tendances :</h2>
 						<ul class="list-unstyled ms-2">

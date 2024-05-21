@@ -33,8 +33,7 @@ class HomeController extends AbstractController
             $searchTerm = $searchForm->getData()['search_term'];
 
             // Redirect to search page with search term as query parameter
-            $searchUrl = $router->generate('app_recherche', ['searchTerm' => $searchTerm]);
-            return new RedirectResponse($searchUrl);
+            return $this->redirectToRoute('app_recherche', ['searchTerm' => $searchTerm]);
         }
 
         $publications = $em->getRepository(Publication::class)->findAll();

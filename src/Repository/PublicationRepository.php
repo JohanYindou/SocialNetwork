@@ -29,7 +29,7 @@ class PublicationRepository extends ServiceEntityRepository
         // Exemple de recherche simple avec LIKE
         return $this->createQueryBuilder('p')
             ->where('p.contenu LIKE :searchTerm')
-            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->setParameter('searchTerm', $searchTerm . '%')
             ->getQuery()
             ->getResult();
     }
