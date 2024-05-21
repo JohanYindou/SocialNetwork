@@ -68,76 +68,68 @@
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
 					<!-- Contenu de la deuxième colonne -->
-					<div>
-						<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
-					</div>
-					<ul
-						class="list-unstyled">
-						{% if searchTerm is null %}
-							<p>J'ai un gros problème</p>
-						{% else %}
-							<p>Il y a {{ publications|length }} publications correspondantes</p>
-						{% endif %}
-
-							{% for publication in publications %}
-								<div class="card">
-									<div class="card-header">
-										<a href="/profil" style="text-decoration: none; color: inherit;">
-											<ul class="list-unstyled d-flex">
-												<li class="p-2">
-													<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-												</li>
-												<li class="p-2">
-													<p class="mb-0">{{ publication.auteur.nom }}</p>
-													<p class="mb-0">@{{ publication.auteur.username }}</p>
-												</li>
-												<li class="p-2 d-flex align-items-center">
-													<p>Posted on
-														{{ publication.createdAt|date('d/m/Y') }}
-														at
-														{{ publication.createdAt|date('H:i') }}</p>
-												</li>
-											</ul>
-										</a>
-									</div>
-									<a href="{{ path('app_post', {'id': publication.id}) }}" style="text-decoration: none; color: inherit;">
-										<div class="card-body">
-											<p>{{ publication.contenu }}</p>
-											<div class="d-flex justify-content-center align-items-center">
-												{% if publication.media %}
-													<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
-												{% endif %}
-											</div>
-										</div>
-										<div class="card-footer d-flex justify-content-center">
-											<div class="mx-4">
-												<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-													<i class="bi bi-chat"></i>
-													Commentaires
-												</a>
-											</div>
-											<div class="mx-4">
-												<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-													<i class="bi bi-heart"></i>
-													Like
-												</a>
-											</div>
-											<div class="mx-4">
-												<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-													<i class="bi bi-share"></i>
-													Partager
-												</a>
-											</div>
-										</div>
+					
+					<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
+					{% if publications is empty %}
+						<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
+					{% else %}
+						<p>Il y a
+							{{ publications|length }}
+							publications correspondantes</p>
+						{% for publication in publications %}
+							<div class="card">
+								<div class="card-header">
+									<a href="/profil" style="text-decoration: none; color: inherit;">
+										<ul class="list-unstyled d-flex">
+											<li class="p-2">
+												<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+											</li>
+											<li class="p-2">
+												<p class="mb-0">{{ publication.auteur.nom }}</p>
+												<p class="mb-0">@{{ publication.auteur.username }}</p>
+											</li>
+											<li class="p-2 d-flex align-items-center">
+												<p>Posté le
+													{{ publication.createdAt|date('d/m/Y') }}
+													à
+													{{ publication.createdAt|date('H:i') }}</p>
+											</li>
+										</ul>
 									</a>
 								</div>
-							{% endfor %}
-						{# {% else %}
-							<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
-						{% endif %} #}
-
-
-					</ul>
+								<a href="{{ path('app_post', {'id': publication.id}) }}" style="text-decoration: none; color: inherit;">
+									<div class="card-body">
+										<p>{{ publication.contenu }}</p>
+										<div class="d-flex justify-content-center align-items-center">
+											{% if publication.media %}
+												<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
+											{% endif %}
+										</div>
+									</div>
+									<div class="card-footer d-flex justify-content-center">
+										<div class="mx-4">
+											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+												<i class="bi bi-chat"></i>
+												Commentaires
+											</a>
+										</div>
+										<div class="mx-4">
+											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+												<i class="bi bi-heart"></i>
+												Like
+											</a>
+										</div>
+										<div class="mx-4">
+											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+												<i class="bi bi-share"></i>
+												Partager
+											</a>
+										</div>
+									</div>
+								</a>
+							</div>
+						{% endfor %}
+					{% endif %}
 				</div>
 				<div class="col-md-3 d-flex flex-column p-2 ms-2">
 					<!-- Contenu de la troisième colonne -->
