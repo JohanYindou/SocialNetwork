@@ -21,6 +21,18 @@ class PublicationRepository extends ServiceEntityRepository
         parent::__construct($registry, Publication::class);
     }
 
+    public function findBySearchTerm($searchTerm)
+    {
+        // Implémentez la logique de recherche pour trouver les publications
+        // en fonction du terme de recherche fourni
+
+        // Exemple de recherche simple avec LIKE
+        return $this->createQueryBuilder('p')
+            ->where('p.contenu LIKE :searchTerm')
+            ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Publication[] Returns an array of Publication objects
     //     */
