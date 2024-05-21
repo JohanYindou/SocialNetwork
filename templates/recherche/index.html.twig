@@ -68,10 +68,13 @@
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
 					<!-- Contenu de la deuxième colonne -->
-					
-					<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
+
+					<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}" method="GET">
+						{{ form_widget(searchForm) }}
+					</form>
+					<h2>Résultats de la recherche pour " {{ searchTerm }} "</h2>
 					{% if publications is empty %}
-						<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
+						<p>Aucun résultat trouvé pour le terme de recherche " {{ searchTerm }} ".</p>
 					{% else %}
 						<p>Il y a
 							{{ publications|length }}
@@ -133,12 +136,6 @@
 				</div>
 				<div class="col-md-3 d-flex flex-column p-2 ms-2">
 					<!-- Contenu de la troisième colonne -->
-					<!-- La fonction recherche est pour l'instant gérée que par home-->
-					<div>
-						<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}">
-							{{ form(searchForm) }}
-						</form>
-					</div>
 					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
 						<h2>Tendances :</h2>
 						<ul class="list-unstyled ms-2">

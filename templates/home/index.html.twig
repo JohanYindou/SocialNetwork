@@ -140,10 +140,9 @@
 				</div>
 				<div
 					class="col-md-3 d-flex flex-column p-2 ms-2">
-					
 					<div>
-						<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}">
-							{{ form(searchForm) }}
+						<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}" method="GET">
+							{{ form_widget(searchForm) }}
 						</form>
 					</div>
 					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">

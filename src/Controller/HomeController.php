@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Publication;
 use App\Repository\PublicationRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +12,7 @@ use App\Form\RechercheType;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, PublicationRepository $publicationRepository, EntityManagerInterface $em): Response
+    public function index(Request $request, PublicationRepository $publicationRepository): Response
     {
         $searchForm = $this->createForm(RechercheType::class);
         $searchForm->handleRequest($request);
