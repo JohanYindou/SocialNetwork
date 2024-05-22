@@ -36,14 +36,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $profilPicture = null;
+    private ?string $profilPicture = '/uploads/users/default.png';
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
@@ -72,6 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->commentaires = new ArrayCollection();
         $this->groupes = new ArrayCollection();
         $this->messages = new ArrayCollection();
+        $this->created_at = new \DateTime();
     }
 
     public function getId(): ?int
@@ -204,8 +205,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setCreatedAt(\DateTimeInterface $created_at): static
     {
-        $this->created_at = $created_at;
-
+        if ($this->created_at === null) {
+            $this->created_at = new \DateTime();
+        }
         return $this;
     }
 

@@ -18,7 +18,7 @@ class AppFixtures extends Fixture
         $faker = Factory::create('fr_FR');
 
         // Mettre des photos de profil
-        $picturePaths = ['/uploads/users/exemple.jpg', '/uploads/users/exemple-2.jpg'];
+        $picturePaths = ['/uploads/users/default-1.jpg', '/uploads/users/default-2.jpg'];
 
 
         /** -------------------------------------------------------------
@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@admin.fr')
             ->setRoles(['ROLE_ADMIN'])
-            ->setPassword('$2y$13$V9Y9X5XjzK5uNq9qIY6Q4eCJfNcZr7xXs3P8C4ZTqo8DvHjX6')
+            ->setPassword('admin')
             ->setNom('admin')
             ->setUsername('admin')
             ->setProfilPicture($faker->randomElement($picturePaths))
