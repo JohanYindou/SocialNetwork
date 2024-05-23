@@ -35,6 +35,15 @@ class PostsController extends AbstractController
         ]);
     }
 
+
+    #[Route('/post/new', name: 'app_new_post')]
+    public function newPost(): Response
+    {
+        return $this->render('new-post.html.twig',[
+            
+        ]);
+    }
+
     #[Route('/comment/{id}', name: 'app_comment')]
     public function comments(
         Request $request,
