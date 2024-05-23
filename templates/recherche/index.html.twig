@@ -16,54 +16,8 @@
 				<div
 					class="col-md-3 d-flex flex-column p-2 ">
 					<!-- Contenu de la première colonne -->
-					<ul class="list-unstyled flex-grow-1 p-4 m-4">
-						<a href="{{ path('app_home') }}">
-							<li class="border border-white rounded mb-2 p-2">Logo</li>
-						</a>
+					{% include 'components/sidebar.html.twig' %}
 
-						<a href="{{path('app_recherche')}}">
-							<li class="border border-white rounded mb-2  p-2">Recherche</li>
-						</a>
-						<a href="{{ path('app_notifications') }}">
-							<li class="border border-white rounded mb-2 p-2">Notifications</li>
-						</a>
-
-						<a href="{{ path('app_messages') }}">
-							<li class="border border-white rounded mb-2 p-2">Messages</li>
-						</a>
-						<a href="{{ path('app_groupes') }}">
-							<li class="border border-white rounded mb-2 p-2">Groupes</li>
-						</a>
-						<a href="{{ path('app_reglages') }}">
-							<li class="border border-white rounded mb-2 p-2">Reglages</li>
-						</a>
-						<li class="border border-white rounded mb-2 p-2">
-							<a class="btn btn-primary" href="" role="button">Poster</a>
-						</li>
-						<li class="border border-white rounded mb-2 p-2">
-							<div
-								class="row align-items-center">
-								<!-- Utilisez une grille Bootstrap avec la classe "row" et "align-items-center" pour aligner les éléments sur la même ligne -->
-								<div
-									class="col-auto">
-									<!-- Utilisez une colonne Bootstrap avec la classe "col-auto" pour que la taille soit déterminée par le contenu -->
-									<a href="{{ path('app_profil') }}">
-										<img src="{{ app.user.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-									</a>
-								</div>
-								<div
-									class="col">
-									<!-- Utilisez une autre colonne Bootstrap pour les paragraphes -->
-									<a href="/profil" style="text-decoration: none; color: inherit;">
-										<p class="mb-0">{{ app.user.nom }}</p>
-										<!-- Ajoutez la classe "mb-0" pour supprimer la marge en bas -->
-										<p class="mb-0">@{{ app.user.username }}</p>
-										<!-- Ajoutez la classe "mb-0" pour supprimer la marge en bas -->
-									</a>
-								</div>
-							</div>
-						</li>
-					</ul>
 				</div>
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
