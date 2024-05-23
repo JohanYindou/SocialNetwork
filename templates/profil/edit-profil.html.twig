@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Edit Profile
+{% endblock %}
+
+{% block body %}
+<h1>Modifier votre profil</h1>
+    {% if app.user %}
+        <div class="card">
+            <div class="card-body">
+                {{ form_start(editProfilForm) }}
+
+                <div class="row mb-3">
+                    <label for="user_username" class="col-sm-2 col-form-label">Nom d'utilisateur</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(editProfilForm.username, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="user_nom" class="col-sm-2 col-form-label">Nom complet</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(editProfilForm.nom, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="user_description" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(editProfilForm.description, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="user_profilePicture" class="col-sm-2 col-form-label">Photo de profil</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(editProfilForm.profilePicture, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+                {{ form_end(editProfilForm) }}
+            </div>
+        </div>
+    {% else %}
+        <p>Vous devez être connecté pour modifier votre profil.</p>
+    {% endif %}
+{% endblock %}

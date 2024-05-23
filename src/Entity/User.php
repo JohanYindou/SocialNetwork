@@ -36,11 +36,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = 'Visiteur';
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $username = null;
+    #[ORM\Column(length: 255)]
+    private ?string $username = 'visiteur';
 
     #[ORM\Column(length: 255)]
     private ?string $profilPicture = '/uploads/users/default.png';
