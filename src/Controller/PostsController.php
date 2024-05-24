@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Repository\CommentaireRepository;
+use App\Entity\Publication;
+use App\Form\PublicationType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CommentaireRepository;
 use App\Repository\PublicationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,11 +38,43 @@ class PostsController extends AbstractController
     }
 
 
-    #[Route('/post/new', name: 'app_new_post')]
-    public function newPost(): Response
+    #[Route('/new-post', name: 'app_new_post', methods: ['GET','POST'])]
+    public function newPost(
+        Request $request,
+        EntityManagerInterface $entityManager
+    ): Response
     {
-        return $this->render('new-post.html.twig',[
-            
+
+        $publication = new Publication();
+        $form = $this->createForm(PublicationType::class, $publication);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $publication->setCreatedAt(new \DateTime());
+            $publication->setAuteur($this->getUser());
+            $publication->setLikes(0);
+
+            // Récupération des données du formulaire
+            $contenu = $form->get('contenu')->getData();
+            $publication->setContenu($contenu);
+
+            $mediaFile = $form->get('media')->getData();
+            if ($mediaFile) {
+                $newFilename = uniqid().'.'.$mediaFile->gessExtension();
+                $mediaFile->move(
+                    $this->getParameter('upload_medias'),
+                    $newFilename
+                );
+                $publication->setMedia($mediaFile);
+            }
+
+            $entityManager->persist($publication);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        }
+        return $this->render('posts/new-post.html.twig',[
+            'form' => $form->createView(),
         ]);
     }
 

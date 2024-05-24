@@ -4,4 +4,38 @@
 {% endblock %}
 {% block body %}
 
+
+<div
+	class="container-fluid d-flex flex-column vh-100 p-2">
+	<!-- Utilisez les classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
+	<div
+		class="row flex-grow-1">
+		<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
+		<div
+			class="d-flex align-items-stretch">
+			<!-- Contenu de la première colonne -->
+			{% include 'components/sidebar.html.twig' %}
+			<!-- Contenu de la deuxième colonne -->
+			<div class="col-md-6">
+                <h2>Créer un nouveau post</h2>
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.contenu, 'Contenu') }}
+                        {{ form_widget(form.contenu, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.contenu) }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form_label(form.media, 'Media') }}
+                        {{ form_widget(form.media, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.media) }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Publier</button>
+                {{ form_end(form) }}
+            </div>
+			<!-- Contenu de la troisieme colonne -->
+			{% include 'components/right-sidebar.html.twig'%}
+		</div>
+	</div>
+</div>
+
 {% endblock %}
