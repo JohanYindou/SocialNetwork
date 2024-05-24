@@ -12,13 +12,8 @@
 			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
 			<div
 				class="d-flex align-items-stretch">
-				<!-- Contenu des colonnes -->
-				<div
-					class="col-md-3 d-flex flex-column p-2 ">
-					<!-- Contenu de la première colonne -->
-					{% include 'components/sidebar.html.twig' %}
-
-				</div>
+				<!-- Contenu de la première colonne -->
+				{% include 'components/sidebar.html.twig' %}
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
 					<!-- Contenu de la deuxième colonne -->
@@ -88,18 +83,8 @@
 						{% endfor %}
 					{% endif %}
 				</div>
-				<div class="col-md-3 d-flex flex-column p-2 ms-2">
-					<!-- Contenu de la troisième colonne -->
-					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
-						<h2>Tendances :</h2>
-						<ul class="list-unstyled ms-2">
-							<li class="mb-2">Item 1</li>
-							<li class="mb-2">Item 2</li>
-							<li class="mb-2">Item 3</li>
-							<li class="mb-2">Item 4</li>
-						</ul>
-					</div>
-				</div>
+				<!-- Contenu de la troisieme colonne -->
+				{% include 'components/right-sidebar.html.twig'%}
 			</div>
 		</div>
 	</div>

@@ -12,15 +12,11 @@
 			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
 			<div
 				class="d-flex align-items-stretch">
-				<!-- Contenu des colonnes -->
-				<div
-					class="col-md-3 d-flex flex-column p-2 ">
-					<!-- Contenu de la première colonne -->
-					{% include 'components/sidebar.html.twig' %}
-				</div>
+				<!-- Contenu de la première colonne -->
+				{% include 'components/sidebar.html.twig' %}
+				<!-- Contenu de la deuxième colonne -->
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<!-- Contenu de la deuxième colonne -->
 					{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 						<div>
 							<h3 class="align-self-center">Welcome Back, {{ app.user.nom }}!</h3>
@@ -41,76 +37,57 @@
 					{% endif %}
 					<ul class="list-unstyled">
                     <!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
-						
-						{% for publication in publications %}
-        <div class="card">
-            <div class="card-header">
-                <a href="/profil" style="text-decoration: none; color: inherit;">
-                    <ul class="list-unstyled d-flex">
-                        <li class="p-2">
-                            <img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-                        </li>
-                        <li class="p-2">
-                            <p class="mb-0">{{ publication.auteur.nom }}</p>
-                            <p class="mb-0">@{{ publication.auteur.username }}</p>
-                        </li>
-						<li class="p-2 d-flex align-items-center">
-							<p>Posted on {{ publication.createdAt|date('d/m/Y') }} at {{ publication.createdAt|date('H:i') }}</p>
-						</li>
-                    </ul>
-                </a>
-            </div>
-			<a href="{{ path('app_post', {'id': publication.id}) }}" style="text-decoration: none; color: inherit;">
-				<div class="card-body">
-					<p>{{ publication.contenu }}</p>
-					<div class="d-flex justify-content-center align-items-center">
-						{% if publication.media %}
-							<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
-						{% endif %}
-					</div>
-				</div>
-				<div class="card-footer d-flex justify-content-center">
-					<div class="mx-4">
-						<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-							<i class="bi bi-chat"></i> Commentaires
-						</a>
-					</div>
-					<div  class="mx-4">
-						<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-							<i class="bi bi-heart"></i> Like
-						</a>
-					</div>
-					<div  class="mx-4">
-						<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-							<i class="bi bi-share"></i> Partager
-						</a>
-					</div>
-				</div>
-			</a>
-		</div>
-    
-{% endfor %}
-
-
+					{% for publication in publications %}
+						<div class="card">
+							<div class="card-header">
+								<a href="/profil" style="text-decoration: none; color: inherit;">
+									<ul class="list-unstyled d-flex">
+										<li class="p-2">
+											<img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+										</li>
+										<li class="p-2">
+											<p class="mb-0">{{ publication.auteur.nom }}</p>
+											<p class="mb-0">@{{ publication.auteur.username }}</p>
+										</li>
+										<li class="p-2 d-flex align-items-center">
+											<p>Posted on {{ publication.createdAt|date('d/m/Y') }} at {{ publication.createdAt|date('H:i') }}</p>
+										</li>
+									</ul>
+								</a>
+							</div>
+							<a href="{{ path('app_post', {'id': publication.id}) }}" style="text-decoration: none; color: inherit;">
+								<div class="card-body">
+									<p>{{ publication.contenu }}</p>
+									<div class="d-flex justify-content-center align-items-center">
+										{% if publication.media %}
+											<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
+										{% endif %}
+									</div>
+								</div>
+								<div class="card-footer d-flex justify-content-center">
+									<div class="mx-4">
+										<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+											<i class="bi bi-chat"></i> Commentaires
+										</a>
+									</div>
+									<div  class="mx-4">
+										<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+											<i class="bi bi-heart"></i> Like
+										</a>
+									</div>
+									<div  class="mx-4">
+										<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+											<i class="bi bi-share"></i> Partager
+										</a>
+									</div>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
 					</ul>
 				</div>
-				<div
-					class="col-md-3 d-flex flex-column p-2 ms-2">
-					<div>
-						<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}" method="GET">
-							{{ form_widget(searchForm) }}
-						</form>
-					</div>
-					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
-						<h2>Tendances :</h2>
-						<ul class="list-unstyled ms-2">
-							<li class="mb-2">Item 1</li>
-							<li class="mb-2">Item 2</li>
-							<li class="mb-2">Item 3</li>
-							<li class="mb-2">Item 4</li>
-						</ul>
-					</div>
-				</div>
+				<!-- Contenu de la troisieme colonne -->
+				{% include 'components/right-sidebar.html.twig'%}
 			</div>
 		</div>
 	</div>

@@ -11,44 +11,39 @@
 			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
 			<div
 				class="d-flex align-items-stretch">
-				<!-- Contenu des colonnes -->
-				<div
-					class="col-md-3 d-flex flex-column p-2 ">
-					<!-- Contenu de la première colonne -->
-					{% include 'components/sidebar.html.twig' %}
-
-				</div>
+				<!-- Contenu de la première colonne -->
+				{% include 'components/sidebar.html.twig' %}
 				<div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-                <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
-                    <img src="{{ app.user.profilPicture }}" class="rounded-circle" style="width: 150px; height: 150px;">
-                     <a href="{{ path('app_profil_edit') }}" class="btn btn-secondary ms-3">Éditer le profil</a> 
-                </div>
-                <div class="card mt-3">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">{{ app.user.nom }}</h5>
-                        <p class="card-text">{{ app.user.username }}</p>
-                        <p class="card-text">{{ app.user.description ? app.user.description : 'Aucune description' }}</p>
-                        <p class="card-text">A rejoint le {{ app.user.createdAt ? app.user.createdAt|date('l, F j, Y') : 'Non disponible' }}</p>
+                    <div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
+                        <img src="{{ app.user.profilPicture }}" class="rounded-circle" style="width: 150px; height: 150px;">
+                        <a href="{{ path('app_profil_edit') }}" class="btn btn-secondary ms-3">Éditer le profil</a> 
                     </div>
-                </div>
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Publications</h5>
-                        {% for publication in app.user.publications %}
-                            <div class="media mb-3">
-                                <img src="{{ publication.auteur.profilPicture }}" class="mr-3 rounded-circle" alt="Photo de profil" width="50">
-                                <div class="media-body">
-                                    <h6 class="mt-0">{{ publication.auteur.nom }}</h6>
-                                    {{ publication.content }}
-                                    <p class="text-muted"><small>{{ publication.createdAt|date('Y-m-d H:i:s') }}</small></p>
+                    <div class="card mt-3">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{ app.user.nom }}</h5>
+                            <p class="card-text">{{ app.user.username }}</p>
+                            <p class="card-text">{{ app.user.description ? app.user.description : 'Aucune description' }}</p>
+                            <p class="card-text">A rejoint le {{ app.user.createdAt ? app.user.createdAt|date('l, F j, Y') : 'Non disponible' }}</p>
+                        </div>
+                    </div>
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Publications</h5>
+                            {% for publication in app.user.publications %}
+                                <div class="media mb-3">
+                                    <img src="{{ publication.auteur.profilPicture }}" class="mr-3 rounded-circle" alt="Photo de profil" width="50">
+                                    <div class="media-body">
+                                        <h6 class="mt-0">{{ publication.auteur.nom }}</h6>
+                                        {{ publication.content }}
+                                        <p class="text-muted"><small>{{ publication.createdAt|date('Y-m-d H:i:s') }}</small></p>
+                                    </div>
                                 </div>
-                            </div>
-                        {% else %}
-                            <p>Aucune publication.</p>
-                        {% endfor %}
+                            {% else %}
+                                <p>Aucune publication.</p>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            </div>
 				<div
 					class="col-md-3 d-flex flex-column p-2 ms-2">
 					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
