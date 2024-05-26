@@ -29,7 +29,7 @@ class PublicationType extends AbstractType
                 'required' => false,
                 'mapped' => false,
                 'attr' => [
-                    'class' => 'form-control',
+                    'image/*',
                 ],
             ]);
         

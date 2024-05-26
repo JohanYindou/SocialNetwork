@@ -34,7 +34,14 @@
                                     <img src="{{ publication.auteur.profilPicture }}" class="mr-3 rounded-circle" alt="Photo de profil" width="50">
                                     <div class="media-body">
                                         <h6 class="mt-0">{{ publication.auteur.nom }}</h6>
-                                        {{ publication.content }}
+                                        <p>{{ publication.contenu }}</p>
+                                        <p>
+                                            {% if publication.media %}
+                                                <img src="{{ publication.media}}" alt="Photo">
+                                                <p>{{ publication.media}}</p>
+                                            {% endif %}
+                                        </p>
+                                    
                                         <p class="text-muted"><small>{{ publication.createdAt|date('Y-m-d H:i:s') }}</small></p>
                                     </div>
                                 </div>

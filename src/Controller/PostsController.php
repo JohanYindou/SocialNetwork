@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Publication;
 use App\Form\PublicationType;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CommentaireRepository;
 use App\Repository\PublicationRepository;
@@ -60,12 +61,18 @@ class PostsController extends AbstractController
 
             $mediaFile = $form->get('media')->getData();
             if ($mediaFile) {
-                $newFilename = uniqid().'.'.$mediaFile->gessExtension();
-                $mediaFile->move(
-                    $this->getParameter('upload_medias'),
-                    $newFilename
-                );
-                $publication->setMedia($mediaFile);
+                if (!in_array($mediaFile->getMimeType(), ['image/png', 'image/jpeg', 'image/gif'])) {
+                    $form->addError(new FormError('Le fichier téléchargé doit être une image (png, jpeg, gif).'));
+                } elseif ($mediaFile->getSize() > 2048 * 1024) {
+                    $form->addError(new FormError('La taille de l\'image ne doit pas dépasser 2 Mo'));
+                } else {
+                    $newFilename = $mediaFile->getClientOriginalName();
+                    $mediaFile->move(
+                        $this->getParameter('upload_medias'),
+                        $newFilename
+                    );
+                    $publication->setMedia('/uploads/medias/'.$newFilename);
+                }
             }
 
             $entityManager->persist($publication);
