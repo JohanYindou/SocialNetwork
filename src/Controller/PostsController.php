@@ -85,6 +85,71 @@ class PostsController extends AbstractController
         ]);
     }
 
+    #[Route('/post/edit/{id}', name: 'app_post_edit')]
+    public function editPost(
+        int $id,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        PublicationRepository $publicationRepository
+    ): Response {
+        $publication = $publicationRepository->findById($id);
+
+        if (!$publication || $publication->getAuteur() !== $this->getUser()) {
+            throw $this->createNotFoundException('Publication non trouvée ou vous n\'êtes pas autorisé à modifier cette publication.');
+        }
+
+        $form = $this->createForm(PublicationType::class, $publication);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $contenu = $form->get('contenu')->getData();
+            $publication->setContenu($contenu)
+                        ->setUpdatedAt(new \DateTime());
+                        
+            $mediaFile = $form->get('media')->getData();
+            if ($mediaFile) {
+                if (!in_array($mediaFile->getMimeType(), ['image/png', 'image/jpeg', 'image/gif'])) {
+                    $form->addError(new FormError('Le fichier téléchargé doit être une image (png, jpeg, gif).'));
+                } elseif ($mediaFile->getSize() > 2048 * 1024) {
+                    $form->addError(new FormError('La taille de l\'image ne doit pas dépasser 2 Mo'));
+                } else {
+                    $newFilename = $mediaFile->getClientOriginalName();
+                    $mediaFile->move(
+                        $this->getParameter('upload_medias'),
+                        $newFilename
+                    );
+                    $publication->setMedia('/uploads/medias/' . $newFilename);
+                }
+            }   
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_profil');
+        }
+
+        return $this->render('posts/edit-post.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    #[Route('/post/delete/{id}', name: 'app_post_delete', methods: ['POST'])]
+    public function deletePost(
+        int $id,
+        EntityManagerInterface $entityManager,
+        PublicationRepository $publicationRepository
+    ): Response {
+        $publication = $publicationRepository->findById($id);
+
+        if (!$publication || $publication->getAuteur() !== $this->getUser()) {
+            throw $this->createNotFoundException('Publication non trouvée ou vous n\'êtes pas autorisé à supprimer cette publication.');
+        }
+
+        $entityManager->remove($publication);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_profil');
+    }
+
     #[Route('/comment/{id}', name: 'app_comment')]
     public function comments(
         Request $request,
@@ -98,5 +163,7 @@ class PostsController extends AbstractController
             'comment' => $comment,
         ]);
     }
+    
+
 }
 
