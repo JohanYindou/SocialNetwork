@@ -35,14 +35,26 @@
                                     <div class="media-body">
                                         <h6 class="mt-0">{{ publication.auteur.nom }}</h6>
                                         <p>{{ publication.contenu }}</p>
-                                        <p>
-                                            {% if publication.media %}
-                                                <img src="{{ publication.media}}" alt="Photo">
-                                                <p>{{ publication.media}}</p>
-                                            {% endif %}
-                                        </p>
-                                    
+                                        {% if publication.media %}
+                                            <img src="{{ publication.media}}" alt="Photo">
+                                        {% endif %}
                                         <p class="text-muted"><small>{{ publication.createdAt|date('Y-m-d H:i:s') }}</small></p>
+                                        <div class="dropdown">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                ...
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ path('app_post_edit', {'id': publication.id}) }}">Modifier</a>
+                                                </li>
+                                                <li>
+                                                    <form method="post" action="{{ path('app_post_delete', {'id': publication.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ?');">
+                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ publication.id) }}">
+                                                        <button class="dropdown-item" type="submit">Supprimer</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             {% else %}

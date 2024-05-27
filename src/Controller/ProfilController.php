@@ -49,7 +49,7 @@ class ProfilController extends AbstractController
     }
 
 
-    #[Route('/profil/edit', name: 'app_profil_edit')]
+    #[Route('/profil-edit', name: 'app_profil_edit')]
     public function edit(
         Request $request,
         EntityManagerInterface $em,
