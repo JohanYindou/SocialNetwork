@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\EditProfilType;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -28,6 +29,25 @@ class ProfilController extends AbstractController
             'controller_name' => 'ProfilController',
         ]);
     }
+
+
+    #[Route('/profil/{id}', name: 'app_user_profil')]
+    public function userProfile(
+        UserRepository $userRepository,
+        int $id
+    ) : Response
+    {
+
+        $user = $userRepository->findById($id);
+        if($user){
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+
+        return $this->render('profil/user-profil.html.twig',[
+            'user' => 'user',
+        ]);
+    }
+
 
     #[Route('/profil/edit', name: 'app_profil_edit')]
     public function edit(

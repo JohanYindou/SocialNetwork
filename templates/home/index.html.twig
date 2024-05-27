@@ -40,10 +40,10 @@
 					{% for publication in publications %}
 						<div class="card">
 							<div class="card-header">
-								<a href="/profil" style="text-decoration: none; color: inherit;">
+								<a href="{{ path('app_user_profil', {id: publication.auteur.id}) }}" style="text-decoration: none; color: inherit;">
 									<ul class="list-unstyled d-flex">
 										<li class="p-2">
-											<img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+												<img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
 										</li>
 										<li class="p-2">
 											<p class="mb-0">{{ publication.auteur.nom }}</p>
