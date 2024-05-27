@@ -39,12 +39,12 @@ class ProfilController extends AbstractController
     {
 
         $user = $userRepository->findById($id);
-        if($user){
+        if(!$user){
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
 
         return $this->render('profil/user-profil.html.twig',[
-            'user' => 'user',
+            'user' => $user,
         ]);
     }
 
