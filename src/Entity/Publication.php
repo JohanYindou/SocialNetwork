@@ -37,9 +37,13 @@ class Publication
     #[ORM\ManyToOne(inversedBy: 'publications')]
     private ?User $auteur = null;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'likedPublications')]
+    private Collection $likedBy;
+
     public function __construct()
     {
         $this->commentaires = new ArrayCollection();
+        $this->likedBy = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,5 +151,37 @@ class Publication
         $this->auteur = $auteur;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getLikedBy(): Collection
+    {
+        return $this->likedBy;
+    }
+
+    public function addLikedBy(User $user): static
+    {
+        if (!$this->likedBy->contains($user)) {
+            $this->likedBy->add($user);
+            $user->addLikedPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedBy(User $user): static
+    {
+        if ($this->likedBy->removeElement($user)) {
+            $user->removeLikedPublication($this);
+        }
+
+        return $this;
+    }
+
+    public function likedByCurrentUser(User $user): bool
+    {
+        return $this->likedBy->contains($user);
     }
 }

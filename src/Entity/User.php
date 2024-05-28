@@ -66,6 +66,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\ManyToMany(targetEntity: Publication::class, inversedBy: 'likedBy')]
+    private Collection $likedPublications;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -73,6 +76,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->groupes = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->created_at = new \DateTime();
+        $this->likedPublications = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -339,6 +343,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Publication>
+     */
+    public function getLikedPublications(): Collection
+    {
+        return $this->likedPublications;
+    }
+
+    public function addLikedPublication(Publication $publication): static
+    {
+        if (!$this->likedPublications->contains($publication)) {
+            $this->likedPublications->add($publication);
+            $publication->addLikedBy($this);
+        }
+
+        return $this;
+    }
+    
+    public function removeLikedPublication(Publication $publication): static
+    {
+        if ($this->likedPublications->removeElement($publication)) {
+            $publication->removeLikedBy($this);
+        }
+
 
         return $this;
     }

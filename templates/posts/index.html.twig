@@ -53,9 +53,10 @@
                                             </a>
                                         </div>
                                         <div  class="mx-4">
-                                            <a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-                                                <i class="bi bi-heart"></i> Like
-                                            </a>
+											<button class="btn btn-link like-btn p-0 border-0 bg-transparent like-btn text-decoration-none" data-id="{{ publication.id }}">
+												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+												<span>{{ publication.likedBy|length }}</span>
+											</button>
                                         </div>
                                         <div  class="mx-4">
                                             <a href="#" class="btn btn-link p-0" style="text-decoration: none;">
@@ -115,4 +116,24 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		document.querySelectorAll('.like-btn').forEach(button => {
+			button.addEventListener('click', () => {
+				const publicationId = button.dataset.id;
+
+				fetch(`/like/${publicationId}`, {
+					method: 'POST',
+					headers: {
+						'X-CSRF-TOKEN': '{{ csrf_token('like') }}'
+					}
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.likes !== undefined) {
+						button.querySelector('.like-count').textContent = data.likes;
+					}
+				});
+			});
+		});
+	</script>
 {% endblock %}

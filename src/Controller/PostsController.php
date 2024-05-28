@@ -31,14 +31,14 @@ class PostsController extends AbstractController
         // }
 
         $publicationId = $request->attributes->get('id'); // Get the ID from the route parameter
-        $publication = $publications->find($publicationId); // Find the publication by ID
+        $publication = $publications->findById($publicationId); // Find the publication by ID
 
         return $this->render('posts/index.html.twig', [
             'publication' => $publication, 
         ]);
     }
 
-
+    
     #[Route('/new-post', name: 'app_new_post', methods: ['GET','POST'])]
     public function newPost(
         Request $request,
