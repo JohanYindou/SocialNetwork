@@ -72,7 +72,7 @@
 									</div>
 									<div  class="mx-4">
 										<a class="btn btn-link p-0" style="text-decoration: none;">
-											<i class="bi bi-heart"></i>
+											<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
 											<span>{{ publication.likedBy|length }}</span>
 										</a>
 									</div>

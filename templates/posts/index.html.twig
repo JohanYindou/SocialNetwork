@@ -25,7 +25,7 @@
                                     <a href="/profil" style="text-decoration: none; color: inherit;">
                                         <ul class="list-unstyled d-flex">
                                             <li class="p-2">
-                                                <img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+                                                <img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
                                             </li>
                                             <li class="p-2">
                                                 <p class="mb-0">{{ publication.auteur.nom }}</p>
@@ -76,7 +76,7 @@
 												<!-- Contenu du commentaire -->
 												<div class="d-flex align-items-start">
 													<div>
-														<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+														<img src="{{commentaire.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
 													</div>
 													<div class="ms-3 w-100">
 														<div class="d-flex justify-content-between align-items-center">
