@@ -59,8 +59,12 @@
 									</div>
 									<div  class="mx-4">
 										<a class="btn btn-link p-0" style="text-decoration: none;">
-											<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-											<span>{{ publication.likedBy|length }}</span>
+											{% if app.user %}	
+												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+											{% else %}
+												<i class="bi bi-heart"></i>
+											{% endif %}
+												<span>{{ publication.likedBy|length }}</span>
 										</a>
 									</div>
 									<div  class="mx-4">

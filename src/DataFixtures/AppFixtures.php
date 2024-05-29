@@ -35,9 +35,9 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@admin.fr')
             ->setRoles(['ROLE_ADMIN'])
-            ->setPassword('admin')
-            ->setNom('admin')
-            ->setUsername('admin')
+            ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
+            ->setNom('Admin Johan')
+            ->setUsername('adminj')
             ->setProfilPicture($faker->randomElement($picturePaths))
             ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
         $manager->persist($admin);
