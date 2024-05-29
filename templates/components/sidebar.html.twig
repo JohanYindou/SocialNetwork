@@ -18,6 +18,11 @@
 		<a href="{{ path('app_profil') }}" class="text-decoration-none">
 			<li class="border border-white rounded mb-2 p-2">Profil</li>
 		</a>
+		{% if 'ROLE_ADMIN' in app.user.roles %}
+			<a href="{{ path('admin') }}" class="text-decoration-none">
+				<li class="border border-white rounded mb-2 p-2">Dashboard</li>
+			</a>
+		{% endif %}
 		<a href="{{ path('app_reglages') }}" class="text-decoration-none">
 			<li class="border border-white rounded mb-2 p-2">Reglages</li>
 		</a>
