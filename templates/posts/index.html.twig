@@ -56,7 +56,7 @@
                                         <div  class="mx-4">
 											<button class="btn btn-link like-btn p-0 border-0 bg-transparent like-btn text-decoration-none" data-id="{{ publication.id }}">
 												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-												<span>{{ publication.likedBy|length }}</span>
+												<span>{{ publication.likes}}</span>
 											</button>
                                         </div>
                                         <div  class="mx-4">
