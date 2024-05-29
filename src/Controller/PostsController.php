@@ -3,15 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Publication;
+use App\Entity\Commentaire;
 use App\Form\PublicationType;
-use Symfony\Component\Form\FormError;
+use App\Form\CommentaireType;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\CommentaireRepository;
 use App\Repository\PublicationRepository;
+use App\Repository\CommentaireRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 
 class PostsController extends AbstractController
 {
@@ -21,20 +23,31 @@ class PostsController extends AbstractController
         PublicationRepository $publications,
         EntityManagerInterface $em,
     ): Response {
-        // // Récupérer l'utilisateur actuellement connecté
-        // $currentUser = $this->getUser();
-
-        // // Vérifier si l'utilisateur est authentifié
-        // if (!$currentUser) {
-        //     return $this->redirectToRoute('app_login');
-        //     throw $this->createNotFoundException('Utilisateur non connecté');
-        // }
 
         $publicationId = $request->attributes->get('id'); // Get the ID from the route parameter
         $publication = $publications->findById($publicationId); // Find the publication by ID
+        
+        if (!$publication) {
+            throw $this->createNotFoundException('La publication n\'existe pas.');
+        }
+        $commentaire = new Commentaire();
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commentaire->setPublication($publication);
+            $commentaire->setAuteur($this->getUser());
+            $commentaire->setCreatedAt(new \DateTime());
+
+            $em->persist($commentaire);
+            $em->flush();
+
+            return $this->redirectToRoute('app_post', ['id' => $publicationId]);
+        }
 
         return $this->render('posts/index.html.twig', [
-            'publication' => $publication, 
+            'publication' => $publication,
+            'commentForm' => $form->createView(),
         ]);
     }
 
