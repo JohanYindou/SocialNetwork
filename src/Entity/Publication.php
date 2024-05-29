@@ -184,4 +184,18 @@ class Publication
     {
         return $this->likedBy->contains($user);
     }
+
+    public function incrementLikes(): self
+    {
+        $this->likes++;
+
+        return $this;
+    }
+
+    public function decrementLikes(): self
+    {
+        $this->likes--;
+
+        return $this;
+    }
 }

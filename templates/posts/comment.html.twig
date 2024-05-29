@@ -17,49 +17,42 @@
 				<!-- Contenu de la deuxième colonne -->
 				<div
 					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<ul
-						class="list-unstyled">
-						<!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
-						<!-- Section commentaire -->
-						<div class="card">
-							<ul class="list-group list-group-flush">
-									<a href="{{ path('app_comment', {'id': comment.id}) }}">
-										<li
-											class="list-group-item">
-											<!-- Contenu du commentaire -->
-											<div class="d-flex align-items-start">
-												<div>
-													<img src="https://via.placeholder.com/150" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-												</div>
-												<div class="ms-3 w-100">
-													<div class="d-flex justify-content-between align-items-center">
-														<div>
-															<strong>{{ comment.auteur.nom }}</strong>
-															<span class="text-muted">@{{ comment.auteur.username }}</span>
-														</div>
-														<div class="text-muted">
-															<small>{{ comment.createdAt|date('d/m/Y') }}
-																{{ comment.createdAt|date('H:i') }}</small>
-														</div>
-													</div>
-													<p class="mt-2">{{ comment.contenu }}</p>
-													<div class="d-flex justify-content-start">
-														<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
-															<i class="bi bi-chat"></i>
-														</a>
-														<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
-															<i class="bi bi-heart"></i>
-														</a>
-														<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-															<i class="bi bi-share"></i>
-														</a>
-													</div>
-												</div>
-											</div>
-										</li>
+					<ul class="list-group list-group-flush">
+						<a class="text-decoration-none text-dark">
+							<li
+								class="list-group-item">
+								<!-- Contenu du commentaire -->
+								<div class="d-flex align-items-start">
+									<a href="{{ path('app_user_profil', {id: comment.auteur.id}) }}">
+										<img src="{{comment.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
 									</a>
-							</ul>
-						</div>
+									<div class="ms-3 w-100">
+										<div class="d-flex justify-content-between align-items-center">
+											<div>
+												<strong>{{ comment.auteur.nom }}</strong>
+												<span class="text-muted">@{{ comment.auteur.username }}</span>
+											</div>
+											<div class="text-muted">
+												<small>{{ comment.createdAt|date('d/m/Y') }}
+													{{ comment.createdAt|date('H:i') }}</small>
+											</div>
+										</div>
+										<p class="mt-2">{{ comment.contenu }}</p>
+										<div class="d-flex justify-content-start">
+											<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
+												<i class="bi bi-chat"></i>
+											</a>
+											<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
+												<i class="bi bi-heart"></i>
+											</a>
+											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+												<i class="bi bi-share"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</li>
+						</a>
 					</ul>
 				</div>
 				<!-- Contenu de la troisieme colonne -->

@@ -12,6 +12,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class LikeController extends AbstractController
 {
@@ -27,27 +28,21 @@ class LikeController extends AbstractController
     }
 
     #[Route('/like/{id}', name: 'like_post', methods: ['POST'])]
-    public function like(Publication $publication, Request $request): JsonResponse
+    public function like(Publication $publication, EntityManagerInterface $entityManager): JsonResponse
     {
         $user = $this->security->getUser();
 
-        if (!$user) {
-            return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
-        }
-
-        $csrfToken = $request->headers->get('X-CSRF-TOKEN');
-        if (!$this->csrfTokenManager->isTokenValid(new CsrfToken('like', $csrfToken))) {
-            return new JsonResponse(['message' => 'Invalid CSRF token'], Response::HTTP_FORBIDDEN);
-        }
-        
         if ($publication->getLikedBy()->contains($user)) {
             $publication->removeLikedBy($user);
+            $publication->decrementLikes();
         } else {
             $publication->addLikedBy($user);
+            $publication->incrementLikes();
         }
 
-        $this->em->flush();
+        $entityManager->persist($publication);
+        $entityManager->flush();
 
-        return new JsonResponse(['likes' => count($publication->getLikedBy())]);
+        return new JsonResponse(['likes' => $publication->getLikes()]);
     }
 }

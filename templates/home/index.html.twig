@@ -56,34 +56,32 @@
 										<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
 											<i class="bi bi-chat"></i>
 											<span>{{ publication.commentaires|length }}</span>
-									</div>
-									<div  class="mx-4">
-										<a class="btn btn-link p-0" style="text-decoration: none;">
-											{% if app.user %}	
-												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-											{% else %}
-												<i class="bi bi-heart"></i>
-											{% endif %}
-												<span>{{ publication.likes}}</span>
 										</a>
 									</div>
-									<div  class="mx-4">
+									<div class="mx-4">
+										<button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
+											<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+											<span>{{ publication.likes }}</span>
+										</button>
+									</div>
+									<div class="mx-4">
 										<div class="dropdown">
-												<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-													<i class="bi bi-share"></i>
-													Partager
-												</button>
-												<ul class="dropdown-menu" aria-labelledby="shareDropdown">
-													<li>
-														<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
-													</li>
-													<li>
-														<button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
-													</li>
-												</ul>
+											<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+												<i class="bi bi-share"></i>
+												Partager
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="shareDropdown">
+												<li>
+													<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
+												</li>
+												<li>
+													<button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
+												</li>
+											</ul>
 										</div>
 									</div>
 								</div>
+
 							</a>
 						</div>
 					{% endfor %}
@@ -105,5 +103,27 @@
 
 			alert("Lien copié: " + copyText.value);
 		}
+
+		document.querySelectorAll('.like-btn').forEach(button => {
+			button.addEventListener('click', () => {
+				const publicationId = button.dataset.id;
+
+				fetch(`/like/${publicationId}`, {
+					method: 'POST',
+					headers: {
+						'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+						'Content-Type': 'application/json'
+					}
+				})
+				.then(response => response.json())
+				.then(data => {
+					if (data.likes !== undefined) {
+						button.querySelector('span').textContent = data.likes;
+						const icon = button.querySelector('i');
+						icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+					}
+				});
+			});
+		});
 	</script>
 {% endblock %}
