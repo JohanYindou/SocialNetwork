@@ -29,9 +29,9 @@ class Publication
     private ?\DateTimeInterface $updated_at = null;
 
     #[ORM\Column]
-    private ?int $likes = null;
+    private ?int $likes = 0;
 
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'publication')]
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'publication', cascade: ['remove'])]
     private Collection $commentaires;
 
     #[ORM\ManyToOne(inversedBy: 'publications')]
@@ -44,6 +44,7 @@ class Publication
     {
         $this->commentaires = new ArrayCollection();
         $this->likedBy = new ArrayCollection();
+        $this->updated_at =new \DateTime();
     }
 
     public function getId(): ?int
@@ -70,7 +71,14 @@ class Publication
 
     public function setMedia(?string $media): static
     {
-        $this->media = $media;
+        // Vérifie si un nouveau média est ajouté
+        if ($media !== null && $media !== $this->media) {
+            // Supprimer l'ancien média
+            if ($this->media) {
+                // Vous pouvez ajouter ici la logique pour supprimer le média précédent
+            }
+            $this->media = $media;
+        }
 
         return $this;
     }
