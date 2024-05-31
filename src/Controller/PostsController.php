@@ -20,12 +20,12 @@ class PostsController extends AbstractController
     #[Route('/post/{id}', name: 'app_post')]
     public function post(
         Request $request,
-        PublicationRepository $publications,
+        PublicationRepository $publicationRepository,
         EntityManagerInterface $em,
     ): Response {
 
         $publicationId = $request->attributes->get('id'); // Get the ID from the route parameter
-        $publication = $publications->findById($publicationId); // Find the publication by ID
+        $publication = $publicationRepository->findById($publicationId); // Find the publication by ID
         
         if (!$publication) {
             throw $this->createNotFoundException('La publication n\'existe pas.');

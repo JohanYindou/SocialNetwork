@@ -2,6 +2,7 @@
 
 {% block title %}Comment
 {% endblock %}
+
 {% block body %}
 
 	<div
@@ -15,8 +16,7 @@
 				<!-- Contenu de la première colonne -->
 				{% include 'components/sidebar.html.twig' %}
 				<!-- Contenu de la deuxième colonne -->
-				<div
-					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
+				<div class="col-md-6 border-start border-end border-white p-2 overflow-auto">
 					<ul class="list-group list-group-flush">
 						<a class="text-decoration-none text-dark">
 							<li
@@ -24,7 +24,7 @@
 								<!-- Contenu du commentaire -->
 								<div class="d-flex align-items-start">
 									<a href="{{ path('app_user_profil', {id: comment.auteur.id}) }}">
-										<img src="{{comment.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+										<img src="{{ comment.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
 									</a>
 									<div class="ms-3 w-100">
 										<div class="d-flex justify-content-between align-items-center">
@@ -33,8 +33,7 @@
 												<span class="text-muted">@{{ comment.auteur.username }}</span>
 											</div>
 											<div class="text-muted">
-												<small>{{ comment.createdAt|date('d/m/Y') }}
-													{{ comment.createdAt|date('H:i') }}</small>
+												<small>{{ comment.createdAt|date('d/m/Y H:i') }}</small>
 											</div>
 										</div>
 										<p class="mt-2">{{ comment.contenu }}</p>
@@ -55,12 +54,11 @@
 						</a>
 					</ul>
 				</div>
-				<!-- Contenu de la troisieme colonne -->
-				{% include 'components/right-sidebar.html.twig'%}
+				<!-- Contenu de la troisième colonne -->
+				{% include 'components/right-sidebar.html.twig' %}
 			</div>
 		</div>
 	</div>
+
 {% endblock %}
-
-
 
