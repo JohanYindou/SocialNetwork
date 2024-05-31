@@ -1,35 +1,59 @@
-<div class="col-md-3 d-flex flex-column p-2 ">
-	<ul class="list-unstyled flex-grow-1 p-4 m-4">
+<div class="col-md-3 d-flex flex-column p-2 bg-light">
+	<ul class="list-unstyled flex-grow-1 p-2">
 		<a href="{{ path('app_home') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Logo</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-house-door-fill me-2"></i>
+				Accueil
+			</li>
 		</a>
 		<a href="{{ path('app_recherche') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Recherche</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-search me-2"></i>
+				Recherche
+			</li>
 		</a>
 		<a href="{{ path('app_notifications') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Notifications</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-bell-fill me-2"></i>
+				Notifications
+			</li>
 		</a>
 		<a href="{{ path('app_messages') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Messages</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-envelope-fill me-2"></i>
+				Messages
+			</li>
 		</a>
 		<a href="{{ path('app_groupes') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Groupes</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-people-fill me-2"></i>
+				Groupes
+			</li>
 		</a>
 		<a href="{{ path('app_profil') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Profil</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-person-fill me-2"></i>
+				Profil
+			</li>
 		</a>
 		{% if 'ROLE_ADMIN' in app.user.roles %}
 			<a href="{{ path('admin') }}" class="text-decoration-none">
-				<li class="border border-white rounded mb-2 p-2">Dashboard</li>
+				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+					<i class="bi bi-speedometer2 me-2"></i>
+					Dashboard
+				</li>
 			</a>
 		{% endif %}
 		<a href="{{ path('app_reglages') }}" class="text-decoration-none">
-			<li class="border border-white rounded mb-2 p-2">Reglages</li>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<i class="bi bi-gear-fill me-2"></i>
+				Reglages
+			</li>
 		</a>
-		<li class="border border-white rounded mb-2 p-2">
-			<a class="btn btn-primary" href="{{ path('app_new_post') }}" >Poster</a>
+		<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+			<a class="btn btn-primary w-100" href="{{ path('app_new_post') }}">Poster</a>
 		</li>
-		<li class="border border-white rounded mb-2 p-2">
+		<li class="border rounded mb-2 p-3 bg-white shadow-sm">
 			<div class="row align-items-center">
 				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 					<div class="col-auto">
@@ -38,10 +62,12 @@
 					<div class="col">
 						<div class="dropdown">
 							<a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
-								<p class="mb-0">{{ app.user.nom }}</p>
-								<p class="mb-0">@{{ app.user.username }}</p>
+								<div class="me-2">
+									<p class="mb-0 fw-bold">{{ app.user.nom }}</p>
+									<p class="mb-0 text-muted">@{{ app.user.username }}</p>
+								</div>
 							</a>
-							<ul class="dropdown-menu" aria-labelledby="dropdownUser">
+							<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
 								<li>
 									<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
 								</li>
@@ -57,5 +83,4 @@
 		</li>
 	</ul>
 </div>
-
 
