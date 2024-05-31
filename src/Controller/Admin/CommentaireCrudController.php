@@ -27,11 +27,28 @@ class CommentaireCrudController extends AbstractCrudController
         $fields = [
             IdField::new('id')->hideOnForm(),
             TextField::new('contenu', 'Contenu'),
-            DateTimeField::new('created_at', 'Créé le')->hideOnForm(),
-            DateTimeField::new('updated_at', 'Mis à jour le')->hideOnForm(),
             AssociationField::new('publication', 'Publication')->hideOnForm(),
             AssociationField::new('auteur', 'Auteur')->hideOnForm(),
         ];
+
+        if ($pageName === Crud::PAGE_NEW) {
+            $fields[] = DateTimeField::new('created_at', 'Créé le');
+        }
+        
+        if ($pageName === Crud::PAGE_EDIT) {
+            $fields[] = DateTimeField::new('updated_at', 'Mis à jour le');
+        }
+        
+        if ($pageName === Crud::PAGE_INDEX) {
+            $fields[] = DateTimeField::new('created_at', 'Créé le');
+            $fields[] = DateTimeField::new('updated_at', 'Mis à jour le');
+        }
+
+        if ($pageName === Action ::DETAIL) {
+            $fields[] = DateTimeField::new('created_at', 'Créé le');
+            $fields[] = DateTimeField::new('updated_at', 'Mis à jour le');
+        }
+
 
         return $fields;
     }
@@ -39,7 +56,9 @@ class CommentaireCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Détails du commentaire');
+            ->setPageTitle(Crud::PAGE_DETAIL, 'Détails du commentaire')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Modification du commentaire')
+            ->setPageTitle(Crud::PAGE_NEW, 'Nouveau commentaire');
     }
 
     public function configureActions(Actions $actions): Actions

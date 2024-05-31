@@ -52,7 +52,9 @@ class UserCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Détails de l\'utlisateur');
+            ->setPageTitle(Crud::PAGE_DETAIL, 'Détails de l\'utlisateur')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Modification d\'un utlisateur')
+            ->setPageTitle(Crud::PAGE_NEW, 'Création d\'un utlisateur');
     }
 
     public function configureActions(Actions $actions): Actions

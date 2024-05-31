@@ -27,19 +27,37 @@ class PublicationCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('contenu', 'Contenu'),
             ImageField::new('media', 'Media')->hideOnForm(),
-            DateTimeField::new('created_at', 'Créé le')->hideOnForm(),
-            DateTimeField::new('updated_at', 'Mis à jour le'),
             IntegerField::new('likes', 'Likes'),
             AssociationField::new('auteur', 'Auteur')->hideOnForm(),
         ];
 
+        if ($pageName === Crud::PAGE_NEW) {
+            $fields[] = DateTimeField::new('created_at', 'Créé le');
+        }
+
+        if ($pageName === Crud::PAGE_EDIT) {
+            $fields[] = DateTimeField::new('updated_at', 'Mis à jour le');
+        }
+
+        if ($pageName === Crud::PAGE_INDEX) {
+            $fields[] = DateTimeField::new('created_at', 'Créé le');
+            $fields[] = DateTimeField::new('updated_at', 'Mis à jour le');
+        }
+
+        if ($pageName === Action::DETAIL) {
+            $fields[] = DateTimeField::new('created_at', 'Créé le');
+            $fields[] = DateTimeField::new('updated_at', 'Mis à jour le');
+        }
+        
         return $fields;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPageTitle(Crud::PAGE_DETAIL, 'Détails de la publication');
+            ->setPageTitle(Crud::PAGE_DETAIL, 'Détails de la publication')
+            ->setPageTitle(Crud::PAGE_EDIT, 'Modifier la publication')
+            ->setPageTitle(Crud::PAGE_NEW, 'Créer une publication');
     }
 
     public function configureActions(Actions $actions): Actions
