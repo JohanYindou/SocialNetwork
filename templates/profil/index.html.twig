@@ -30,32 +30,72 @@
                         <div class="card-body">
                             <h5 class="card-title">Publications</h5>
                             {% for publication in app.user.publications %}
-                                <div class="media mb-3">
-                                    <img src="{{ publication.auteur.profilPicture }}" class="mr-3 rounded-circle" alt="Photo de profil" width="50">
-                                    <div class="media-body">
-                                        <h6 class="mt-0">{{ publication.auteur.nom }}</h6>
-                                        <p>{{ publication.contenu }}</p>
-                                        {% if publication.media %}
-                                            <img src="{{ publication.media}}" alt="Photo">
-                                        {% endif %}
-                                        <p class="text-muted"><small>{{ publication.createdAt|date('Y-m-d H:i:s') }}</small></p>
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                ...
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <a class="dropdown-item" href="{{ path('app_post_edit', {'id': publication.id}) }}">Modifier</a>
-                                                </li>
-                                                <li>
-                                                    <form method="post" action="{{ path('app_post_delete', {'id': publication.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ?');">
-                                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ publication.id) }}">
-                                                        <button class="dropdown-item" type="submit">Supprimer</button>
-                                                    </form>
-                                                </li>
-                                            </ul>
-                                        </div>
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <a href="{{ path('app_user_profil', {id: publication.auteur.id}) }}" class="text-decoration-none text-dark">
+                                            <div class="d-flex align-items-center">
+                                                <img src="{{ publication.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+                                                <div>
+                                                    <p class="mb-0 fw-bold">{{ publication.auteur.nom }}</p>
+                                                    <p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
+                                                </div>
+                                            </div>
+                                        </a>
                                     </div>
+                                    <a href="{{ path('app_post', {'id': publication.id}) }}" class="text-decoration-none text-dark">
+                                        <div class="card-body">
+                                            <p>{{ publication.contenu }}</p>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                {% if publication.media %}
+                                                    <img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="card-footer d-flex justify-content-between">
+                                            <div>
+                                                <a href="#" class="btn btn-link p-0 text-decoration-none">
+                                                    <i class="bi bi-chat"></i>
+                                                    <span>{{ publication.commentaires|length }}</span>
+                                                </a>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
+                                                    <i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                                    <span>{{ publication.likes }}</span>
+                                                </button>
+                                            </div>
+                                            <div class="dropdown">
+                                                <button class="btn btn-link p-0 dropdown-toggle text-decoration-none" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-share"></i>
+                                                    Partager
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="shareDropdown">
+                                                    <li>
+                                                        <input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
+                                                    </li>
+                                                    <li>
+                                                        <button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="dropdown">
+                                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    ...
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <a class="dropdown-item" href="{{ path('app_post_edit', {'id': publication.id}) }}">Modifier</a>
+                                                    </li>
+                                                    <li>
+                                                        <form method="post" action="{{ path('app_post_delete', {'id': publication.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette publication ?');">
+                                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ publication.id) }}">
+                                                            <button class="dropdown-item" type="submit">Supprimer</button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
                             {% else %}
                                 <p>Aucune publication.</p>
@@ -63,18 +103,7 @@
                         </div>
                     </div>
                 </div>
-				<div
-					class="col-md-3 d-flex flex-column p-2 ms-2">
-					<div class="border border-white mt-3 p-2 flex-grow-1 rounded">
-						<h2>Tendances :</h2>
-						<ul class="list-unstyled ms-2">
-							<li class="mb-2">Item 1</li>
-							<li class="mb-2">Item 2</li>
-							<li class="mb-2">Item 3</li>
-							<li class="mb-2">Item 4</li>
-						</ul>
-					</div>
-				</div>
+				{% include 'components/right-sidebar.html.twig' %}
 			</div>
 		</div>
 	</div>

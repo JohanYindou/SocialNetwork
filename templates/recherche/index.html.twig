@@ -2,80 +2,59 @@
 
 {% block title %}Recherche
 {% endblock %}
+
 {% block body %}
 
-	<div
-		class="container-fluid d-flex flex-column vh-100 p-2">
-		<!-- Utilisez les classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
-		<div
-			class="row flex-grow-1">
-			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
-			<div
-				class="d-flex align-items-stretch">
-				<!-- Contenu de la première colonne -->
+	<div class="container-fluid d-flex flex-column vh-100 p-2">
+		<div class="row flex-grow-1">
+			<div class="d-flex align-items-stretch">
 				{% include 'components/sidebar.html.twig' %}
-				<div
-					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<!-- Contenu de la deuxième colonne -->
-
-					<form class="d-flex ms-2" role="search" action="{{ path('app_recherche') }}" method="GET">
+				<div class="col-md-6 border-start border-end border-white p-2 overflow-auto">
+					<form class="ms-2 mb-4" role="search" action="{{ path('app_recherche') }}" method="GET">
 						{{ form_widget(searchForm) }}
 					</form>
-					<h2>Résultats de la recherche pour " {{ searchTerm }} "</h2>
+					<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
 					{% if publications is empty %}
-						<p>Aucun résultat trouvé pour le terme de recherche " {{ searchTerm }} ".</p>
+						<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
 					{% else %}
 						<p>Il y a
 							{{ publications|length }}
 							publications correspondantes</p>
 						{% for publication in publications %}
-							<div class="card">
+							<div class="card mb-3">
 								<div class="card-header">
-									<a href="/profil" style="text-decoration: none; color: inherit;">
-										<ul class="list-unstyled d-flex">
-											<li class="p-2">
-												<img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-											</li>
-											<li class="p-2">
+									<a href="/profil" class="text-decoration-none text-dark">
+										<div class="d-flex align-items-center">
+											<img src="{{ publication.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+											<div>
 												<p class="mb-0">{{ publication.auteur.nom }}</p>
-												<p class="mb-0">@{{ publication.auteur.username }}</p>
-											</li>
-											<li class="p-2 d-flex align-items-center">
-												<p>Posté le
+												<p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
+												<small class="text-muted">Posté le
 													{{ publication.createdAt|date('d/m/Y') }}
 													à
-													{{ publication.createdAt|date('H:i') }}</p>
-											</li>
-										</ul>
+													{{ publication.createdAt|date('H:i') }}</small>
+											</div>
+										</div>
 									</a>
 								</div>
-								<a href="{{ path('app_post', {'id': publication.id}) }}" style="text-decoration: none; color: inherit;">
+								<a href="{{ path('app_post', {'id': publication.id}) }}" class="text-decoration-none text-dark">
 									<div class="card-body">
-										<p>{{ publication.contenu }}</p>
-										<div class="d-flex justify-content-center align-items-center">
-											{% if publication.media %}
-												<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
-											{% endif %}
-										</div>
+										<p class="card-text">{{ publication.contenu }}</p>
+										{% if publication.media %}
+											<img src="{{ publication.media }}" class="img-fluid rounded" alt="Publication media">
+										{% endif %}
 									</div>
-									<div class="card-footer d-flex justify-content-center">
-										<div class="mx-4">
-											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+									<div class="card-footer d-flex justify-content-between">
+										<div>
+											<a href="#" class="btn btn-link text-decoration-none">
 												<i class="bi bi-chat"></i>
-												Commentaires
-											</a>
-										</div>
-										<div class="mx-4">
-											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+												Commentaires</a>
+											<a href="#" class="btn btn-link text-decoration-none">
 												<i class="bi bi-heart"></i>
-												Like
-											</a>
-										</div>
-										<div class="mx-4">
-											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+												Like</a>
+											<a href="#" class="btn btn-link text-decoration-none">
 												<i class="bi bi-share"></i>
-												Partager
-											</a>
+												Partager</a>
 										</div>
 									</div>
 								</a>
@@ -83,10 +62,10 @@
 						{% endfor %}
 					{% endif %}
 				</div>
-				<!-- Contenu de la troisieme colonne -->
-				{% include 'components/right-sidebar.html.twig'%}
+				{% include 'components/right-sidebar.html.twig' %}
 			</div>
 		</div>
 	</div>
+
 {% endblock %}
 
