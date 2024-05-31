@@ -115,6 +115,26 @@ document.execCommand("copy");
 
 alert("Lien copié: " + copyText.value);
 }
+
+document.querySelectorAll('.like-btn').forEach(button => {
+button.addEventListener('click', () => {
+const publicationId = button.dataset.id;
+
+fetch (`/like/${publicationId}`, {
+method: 'POST',
+headers: {
+'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+'Content-Type': 'application/json'
+}
+}).then(response => response.json()).then(data => {
+if (data.likes !== undefined) {
+button.querySelector('span').textContent = data.likes;
+const icon = button.querySelector('i');
+icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+}
+});
+});
+});
 </script>
 {% endblock %}
 
