@@ -22,13 +22,6 @@
 			</a>
 		{% endif %}
 
-		<a href="{{ path('app_reglages') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
-				<i class="bi bi-gear-fill me-2"></i>
-				Reglages
-			</li>
-		</a>
-
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 			<a href="{{ path('conversation_index') }}" class="text-decoration-none">
 				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
