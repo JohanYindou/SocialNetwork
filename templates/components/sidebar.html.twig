@@ -12,19 +12,6 @@
 				Recherche
 			</li>
 		</a>
-		{# <a href="{{ path('app_notifications') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
-				<i class="bi bi-bell-fill me-2"></i>
-				Notifications
-			</li>
-		</a> #}
-
-		<a href="{{ path('app_groupes') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
-				<i class="bi bi-people-fill me-2"></i>
-				Groupes
-			</li>
-		</a>
 
 		{% if is_granted('IS_AUTHENTICATED_FULLY') and 'ROLE_ADMIN' in app.user.roles %}
 			<a href="{{ path('admin') }}" class="text-decoration-none">
