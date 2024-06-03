@@ -57,9 +57,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'auteur')]
     private Collection $commentaires;
 
-    #[ORM\OneToMany(targetEntity: Groupe::class, mappedBy: 'createur')]
-    private Collection $groupes;
-
     #[ORM\OneToMany(targetEntity: Message::class, mappedBy: 'utilisateur')]
     private Collection $messages;
 
@@ -76,7 +73,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->publications = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
-        $this->groupes = new ArrayCollection();
         $this->messages = new ArrayCollection();
         $this->created_at = new \DateTime();
         $this->likedPublications = new ArrayCollection();
@@ -273,36 +269,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($commentaire->getAuteur() === $this) {
                 $commentaire->setAuteur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Groupe>
-     */
-    public function getGroupes(): Collection
-    {
-        return $this->groupes;
-    }
-
-    public function addGroupe(Groupe $groupe): static
-    {
-        if (!$this->groupes->contains($groupe)) {
-            $this->groupes->add($groupe);
-            $groupe->setCreateur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGroupe(Groupe $groupe): static
-    {
-        if ($this->groupes->removeElement($groupe)) {
-            // set the owning side to null (unless already changed)
-            if ($groupe->getCreateur() === $this) {
-                $groupe->setCreateur(null);
             }
         }
 
