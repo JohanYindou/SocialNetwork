@@ -6,24 +6,24 @@
 			<div class="d-flex align-items-stretch">
 				{% include 'components/sidebar.html.twig' %}
 
-				<div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<h1>Nouvelle Conversation</h1>
+				<div class="col-md-6 border-start border-end border-light d-flex flex-column p-3 overflow-auto">
+					<h1 class="mb-4">Nouvelle Conversation</h1>
 
-					<form method="post" action="{{ path('conversation_create') }}">
-						<label for="user_id">Choisissez un destinataire :</label>
-						<select id="user_id" name="user_id">
-							{% for user in users %}
-								<option value="{{ user.id }}">{{ user.username }}</option>
-							{% endfor %}
-						</select>
-						<button type="submit">Créer la conversation</button>
+					<form method="post" action="{{ path('conversation_create') }}" class="mb-3">
+						<div class="mb-3">
+							<label for="user_id" class="form-label">Choisissez un destinataire :</label>
+							<select id="user_id" name="user_id" class="form-select">
+								{% for user in users %}
+									<option value="{{ user.id }}">{{ user.username }}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary">Créer la conversation</button>
 					</form>
 				</div>
 				{% include 'components/right-sidebar.html.twig' %}
 			</div>
 		</div>
 	</div>
-
 {% endblock %}
-
 

@@ -19,9 +19,12 @@ class MessagesController extends AbstractController
         $messages = $entityManager->getRepository(Message::class)
             ->findBy(['conversation' => $conversation]);
 
+        $participants = $conversation->getParticipantsExceptCurrent($this->getUser());
+
         return $this->render('conversation/show.html.twig', [
             'conversation' => $conversation,
             'messages' => $messages,
+            'participants' => $participants,
         ]);
     }
 

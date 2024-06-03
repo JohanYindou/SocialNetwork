@@ -4,14 +4,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Conversation;
 use App\Entity\User;
+use App\Entity\Conversation;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\ConversationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ConversationController extends AbstractController
 {
@@ -35,10 +36,13 @@ class ConversationController extends AbstractController
         return $this->redirectToRoute('conversation_index');
     }
 
-    #[Route('/conversations', name: 'conversation_index')]
-    public function index(EntityManagerInterface $entityManager): Response
+    #[Route('/messages', name: 'conversation_index')]
+    public function index(ConversationRepository $conversationRepository): Response
     {
-        $conversations = $entityManager->getRepository(Conversation::class)->findAll();
+        $user = $this->getUser();
+
+        $conversations = $conversationRepository->getConversationsForUser($user);
+
         return $this->render('conversation/index.html.twig', [
             'conversations' => $conversations,
         ]);

@@ -1,7 +1,13 @@
-{# templates/conversation/show.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Conversation{% endblock %}
+{% block title %}Conversation avec
+{% for participant in participants %}
+	{{ participant.username }}
+	{% if not loop.last %},
+	{% endif %}
+{% endfor %}
+
+{% endblock %}
 
 {% block body %}
 	<div class="container-fluid d-flex flex-column vh-100 p-2">
@@ -9,30 +15,35 @@
 			<div class="d-flex align-items-stretch">
 				{% include 'components/sidebar.html.twig' %}
 
-				<div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<h1>Messages</h1>
-					<ul>
+				<div class="col-md-6 border-start border-end border-light d-flex flex-column p-3 overflow-auto">
+					<h1 class="mb-4">Messages avec avec
+						{% for participant in participants %}
+							{{ participant.username }}
+							{% if not loop.last %},
+							{% endif %}
+						{% endfor %}
+					</h1>
+					<ul class="list-group mb-4">
 						{% for message in conversation.messages %}
-							<li>
-								{{ message.utilisateur.username }}:
+							<li class="list-group-item">
+								<strong>{{ message.utilisateur.username }}:</strong>
 								{{ message.contenu }}
 							</li>
 						{% endfor %}
 					</ul>
 
-					<form action="{{ path('app_message') }}" method="post">
+					<form action="{{ path('app_message') }}" method="post" class="d-flex flex-column gap-3">
 						<input type="hidden" name="conversation_id" value="{{ conversation.id }}">
-						<textarea name="contenu"></textarea>
-						<button type="submit">Send</button>
+						<div class="form-floating">
+							<textarea class="form-control" placeholder="Write your message here" name="contenu" id="messageContent" style="height: 100px"></textarea>
+							<label for="messageContent">Write your message here</label>
+						</div>
+						<button type="submit" class="btn btn-primary">Send</button>
 					</form>
 				</div>
 				{% include 'components/right-sidebar.html.twig' %}
 			</div>
 		</div>
 	</div>
-
-
 {% endblock %}
-
-
 

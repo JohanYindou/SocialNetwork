@@ -50,7 +50,7 @@
 										</div>
 										<div>
 											<button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
-												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+												<i class="bi {% if not is_granted('IS_AUTHENTICATED_FULLY') %}bi-heart{% else %}{{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}{% endif %}"></i>
 												<span>{{ publication.likes }}</span>
 											</button>
 										</div>

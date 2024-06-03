@@ -12,31 +12,21 @@
 				Recherche
 			</li>
 		</a>
-		<a href="{{ path('app_notifications') }}" class="text-decoration-none">
+		{# <a href="{{ path('app_notifications') }}" class="text-decoration-none">
 			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-bell-fill me-2"></i>
 				Notifications
 			</li>
-		</a>
-		<a href="{{ path('conversation_index') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
-				<i class="bi bi-envelope-fill me-2"></i>
-				Messages
-			</li>
-		</a>
+		</a> #}
+
 		<a href="{{ path('app_groupes') }}" class="text-decoration-none">
 			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-people-fill me-2"></i>
 				Groupes
 			</li>
 		</a>
-		<a href="{{ path('app_profil') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
-				<i class="bi bi-person-fill me-2"></i>
-				Profil
-			</li>
-		</a>
-		{% if 'ROLE_ADMIN' in app.user.roles %}
+
+		{% if is_granted('IS_AUTHENTICATED_FULLY') and 'ROLE_ADMIN' in app.user.roles %}
 			<a href="{{ path('admin') }}" class="text-decoration-none">
 				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 					<i class="bi bi-speedometer2 me-2"></i>
@@ -44,15 +34,33 @@
 				</li>
 			</a>
 		{% endif %}
+
 		<a href="{{ path('app_reglages') }}" class="text-decoration-none">
 			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-gear-fill me-2"></i>
 				Reglages
 			</li>
 		</a>
-		<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
-			<a class="btn btn-primary w-100" href="{{ path('app_new_post') }}">Poster</a>
-		</li>
+
+		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			<a href="{{ path('conversation_index') }}" class="text-decoration-none">
+				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+					<i class="bi bi-envelope-fill me-2"></i>
+					Messages
+				</li>
+			</a>
+			<a href="{{ path('app_profil') }}" class="text-decoration-none">
+				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+					<i class="bi bi-person-fill me-2"></i>
+					Profil
+				</li>
+			</a>
+			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<a class="btn btn-primary w-100" href="{{ path('app_new_post') }}">Poster</a>
+			</li>
+		{% endif %}
+
+
 		<li class="border rounded mb-2 p-3 bg-white shadow-sm">
 			<div class="row align-items-center">
 				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}

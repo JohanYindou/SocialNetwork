@@ -6,19 +6,19 @@
 		<div class="row flex-grow-1">
 			<div class="d-flex align-items-stretch">
 				{% include 'components/sidebar.html.twig' %}
-				<div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<h1>Conversations</h1>
+				<div class="col-md-6 border-end border-light p-3 overflow-auto">
+					<h1 class="mb-3">Messages</h1>
 					<a href="{{ path('conversation_new') }}" class="btn btn-primary mb-3">Nouvelle Conversation</a>
-					<ul>
+					<ul class="list-group">
 						{% if conversations is empty %}
-							<p>Aucune conversation existante.</p>
+							<p class="text-center text-muted">Aucune conversation existante.</p>
 						{% else %}
 							{% for conversation in conversations %}
-								<li>
-									<a href="{{ path('conversation_show', {'id': conversation.id}) }}">
+								<li class="list-group-item">
+									<a href="{{ path('conversation_show', {'id': conversation.id}) }}" class="text-decoration-none text-dark">
 										Conversation avec
 										{% for participant in conversation.getParticipantsExceptCurrent(app.user) %}
-											{{ participant.username }}
+											<strong>{{ participant.username }}</strong>
 											{% if not loop.last %},
 											{% endif %}
 										{% endfor %}
