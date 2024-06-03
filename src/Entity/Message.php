@@ -24,9 +24,6 @@ class Message
     private ?bool $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
-    private ?Groupe $groupe = null;
-
-    #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?User $utilisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
@@ -73,17 +70,6 @@ class Message
         return $this;
     }
 
-    public function getGroupe(): ?Groupe
-    {
-        return $this->groupe;
-    }
-
-    public function setGroupe(?Groupe $groupe): static
-    {
-        $this->groupe = $groupe;
-
-        return $this;
-    }
 
     public function getUtilisateur(): ?User
     {
