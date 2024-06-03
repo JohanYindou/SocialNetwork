@@ -20,9 +20,6 @@ class Message
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private ?bool $status = null;
-
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?User $utilisateur = null;
 
@@ -54,18 +51,6 @@ class Message
     public function setCreatedAt(\DateTimeInterface $created_at): static
     {
         $this->created_at = $created_at;
-
-        return $this;
-    }
-
-    public function getStatus(): ?bool
-    {
-        return $this->status;
-    }
-
-    public function setStatus(bool $status): static
-    {
-        $this->status = $status;
 
         return $this;
     }
