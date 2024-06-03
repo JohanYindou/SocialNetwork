@@ -16,7 +16,7 @@
 				{% include 'components/sidebar.html.twig' %}
 
 				<div class="col-md-6 border-start border-end border-light d-flex flex-column p-3 overflow-auto">
-					<h1 class="mb-4">Messages avec avec
+					<h1 class="mb-4">Messages avec
 						{% for participant in participants %}
 							{{ participant.username }}
 							{% if not loop.last %},
@@ -28,6 +28,7 @@
 							<li class="list-group-item">
 								<strong>{{ message.utilisateur.username }}:</strong>
 								{{ message.contenu }}
+								<span class="text-muted float-end">{{ message.createdAt|date('d/m/Y H:i') }}</span>
 							</li>
 						{% endfor %}
 					</ul>
