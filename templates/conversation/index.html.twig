@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="container-fluid d-flex flex-column vh-100 p-2">
+		<div class="row flex-grow-1">
+			<div class="d-flex align-items-stretch">
+				{% include 'components/sidebar.html.twig' %}
+				<div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
+					<h1>Conversations</h1>
+					<a href="{{ path('conversation_new') }}" class="btn btn-primary mb-3">Nouvelle Conversation</a>
+					<ul>
+						{% if conversations is empty %}
+							<p>Aucune conversation existante.</p>
+						{% else %}
+							{% for conversation in conversations %}
+								<li>
+									<a href="{{ path('conversation_show', {'id': conversation.id}) }}">
+										Conversation avec
+										{% for participant in conversation.getParticipantsExceptCurrent(app.user) %}
+											{{ participant.username }}
+											{% if not loop.last %},
+											{% endif %}
+										{% endfor %}
+									</a>
+								</li>
+							{% endfor %}
+						{% endif %}
+					</ul>
+				</div>
+				{% include 'components/right-sidebar.html.twig' %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+

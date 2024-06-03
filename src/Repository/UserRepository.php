@@ -52,4 +52,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAllUsersExceptCurrent(User $currentUser): array
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :currentUser')
+            ->setParameter('currentUser', $currentUser->getId())
+            ->getQuery()
+            ->getResult();
+    }
 }

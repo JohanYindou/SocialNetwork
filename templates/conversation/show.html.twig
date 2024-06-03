@@ -1,0 +1,38 @@
+{# templates/conversation/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block body %}
+	<div class="container-fluid d-flex flex-column vh-100 p-2">
+		<div class="row flex-grow-1">
+			<div class="d-flex align-items-stretch">
+				{% include 'components/sidebar.html.twig' %}
+
+				<div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
+					<h1>Messages</h1>
+					<ul>
+						{% for message in conversation.messages %}
+							<li>
+								{{ message.utilisateur.username }}:
+								{{ message.contenu }}
+							</li>
+						{% endfor %}
+					</ul>
+
+					<form action="{{ path('app_message') }}" method="post">
+						<input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+						<textarea name="contenu"></textarea>
+						<button type="submit">Send</button>
+					</form>
+				</div>
+				{% include 'components/right-sidebar.html.twig' %}
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}
+
+
+

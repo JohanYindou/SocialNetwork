@@ -20,14 +20,17 @@ class Message
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created_at = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Groupe $groupe = null;
 
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?User $utilisateur = null;
+
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    private ?Conversation $conversation = null;
 
     public function getId(): ?int
     {
@@ -58,12 +61,12 @@ class Message
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?bool
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(bool $status): static
     {
         $this->status = $status;
 
@@ -90,6 +93,18 @@ class Message
     public function setUtilisateur(?User $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    public function getConversation(): ?Conversation
+    {
+        return $this->conversation;
+    }
+
+    public function setConversation(?Conversation $conversation): static
+    {
+        $this->conversation = $conversation;
 
         return $this;
     }

@@ -1,20 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MessagesController!{% endblock %}
+{% block title %}Messagerie{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="container-fluid d-flex flex-column vh-100 p-2">
+        <div class="row flex-grow-1">
+            <div class="d-flex align-items-stretch">
+                {% include 'components/sidebar.html.twig' %}
+            
+                <div class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
+                    <h1>Messages</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                    <ul>
+                        {% for message in messages %}
+                            <li>
+                                <strong>{{ message.utilisateur.username }}</strong>:
+                                {{ message.contenu }}
+                            </li>
+                        {% endfor %}
+                    </ul>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/jyind/Documents/Projets/SocialNetwork/src/Controller/MessagesController.php</code></li>
-        <li>Your template at <code>C:/Users/jyind/Documents/Projets/SocialNetwork/templates/messages/index.html.twig</code></li>
-    </ul>
-</div>
+                    <form method="post" action="{{ path('message_send') }}">
+                        <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+                        <textarea name="contenu" required></textarea>
+                        <button type="submit">Send</button>
+                    </form>
+                </div>
+                {% include 'components/right-sidebar.html.twig' %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
