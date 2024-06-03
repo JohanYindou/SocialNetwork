@@ -14,19 +14,11 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(Request $request, PublicationRepository $publicationRepository): Response
     {
-        $searchForm = $this->createForm(RechercheType::class);
-        $searchForm->handleRequest($request);
-
-        if ($searchForm->isSubmitted() && $searchForm->isValid()) {
-            $searchTerm = $searchForm->get('search_term')->getData();
-            return $this->redirectToRoute('app_recherche', ['searchTerm' => $searchTerm]);
-        }
 
         $publications = $publicationRepository->findAll();
 
         return $this->render('home/index.html.twig', [
             'publications' => $publications,
-            'searchForm' => $searchForm->createView(),
         ]);
     }
 }
