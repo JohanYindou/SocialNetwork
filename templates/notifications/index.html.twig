@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Notifications{% endblock %}
+
+{% block body %}
+<h1>Notifications</h1>
+<div class="container-fluid d-flex flex-column vh-100 p-2">
+	<div class="row flex-grow-1">
+		<div
+			class="d-flex align-items-stretch">
+			<!-- Contenu de la première colonne -->
+			{% include 'components/sidebar.html.twig' %}
+			<!-- Contenu de la deuxième colonne -->
+            <div class="col-md-6">
+                <h1>Notifications</h1>
+                <ul class="list-group">
+                    {% for notification in notifications %}
+                        <li class="list-group-item">
+                            {{ notification.message }}
+                            <span class="text-muted float-end">{{ notification.createdAt|date('d/m/Y H:i') }}</span>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">Aucune notification</li>
+                    {% endfor %}
+                </ul>
+            </div>
+			<!-- Contenu de la troisième colonne -->
+			{% include 'components/right-sidebar.html.twig' %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Publication;
+use App\Entity\Notification;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,12 +34,26 @@ class LikeController extends AbstractController
     {
         $user = $this->security->getUser();
 
+        // Vérification du type de l'utilisateur
+        if (!$user instanceof User) {
+            return new JsonResponse(['error' => 'Utilisateur non authentifié'], 403);
+        }
+
         if ($publication->getLikedBy()->contains($user)) {
             $publication->removeLikedBy($user);
             $publication->decrementLikes();
         } else {
             $publication->addLikedBy($user);
             $publication->incrementLikes();
+
+            // Créer et persister une notification
+            $notification = new Notification();
+            $notification->setUser($publication->getAuteur());
+            $notification->setType('like');
+            $notification->setMessage($user->getUsername() . ' a liké votre post');
+            $notification->setCreatedAt(new \DateTime());
+
+            $entityManager->persist($notification);
         }
 
         $entityManager->persist($publication);
