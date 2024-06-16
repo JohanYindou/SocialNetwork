@@ -43,16 +43,31 @@ class AppFixtures extends Fixture
         $manager->persist($admin);
 
 
-        // Set Utilisateurs
+        // Set Système
 
+        $system = new User();
+        $system->setEmail('system@system.fr')
+            ->setRoles(['ROLE_SYSTEM'], ['ROLE_ADMIN'])
+            ->setPassword('$2y$13$wqXiXE8U6QhYtIRJFedLA.MkNVmDzn89jVz5CBYENUOwHfAlyYNG2')
+            ->setNom('Système')
+            ->setUsername('system')
+            ->setProfilPicture($faker->randomElement($picturePaths))
+            ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
+        $manager->persist($system);
+
+        // Set Utilisateurs
+        
+        
         $users = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 15; $i++) {
+            $username = $faker->username;
+            $nom = $faker->lastName;
             $user = new User();
-            $user->setEmail($faker->email)
+            $user->setEmail($username . '@socialnetwork.fr')
                 ->setPassword('$2y$13$V9Y9X5XjzK5uNq9qIY6Q4eCJfNcZr7xXs3P8C4ZTqo8DvHjX6')
                 ->setRoles(['ROLE_USER'])
-                ->setNom($faker->lastName)
-                ->setUsername($faker->username)
+                ->setNom($nom)
+                ->setUsername($username)
                 ->setProfilPicture($faker->randomElement($picturePaths))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
             $manager->persist($user);
@@ -70,7 +85,7 @@ class AppFixtures extends Fixture
 
 
         $publications = [];
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 25; $i++) {
             $publication = new Publication();
             $publication->setContenu($faker->sentence(10))
                 ->setAuteur($faker->randomElement($users))
@@ -88,46 +103,13 @@ class AppFixtures extends Fixture
          *  
          *  --------------------------------------------------------------*/
 
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 80; $i++) {
             $commentaire = new Commentaire();
             $commentaire->setContenu($faker->sentence(10))
                 ->setAuteur($faker->randomElement($users))
                 ->setPublication($faker->randomElement($publications))
                 ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
             $manager->persist($commentaire);
-        }
-
-
-        /** -------------------------------------------------------------
-         *                     ENTITé MESSAGE
-         *  
-         *  Peut etre fait il rajouté un variable destinataire ?
-         *  --------------------------------------------------------------*/
-        $status = ['En cours', 'Lu', 'Archivé'];
-        for ($i = 0; $i < 20; $i++) {
-            $message = new Message();
-            $message->setContenu($faker->sentence(10))
-                ->setUtilisateur($faker->randomElement($users))
-                ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'))
-                ->setStatus($faker->randomElement($status));
-            $manager->persist($message);
-        }
-
-
-        /** -------------------------------------------------------------
-         *                     ENTITé GROUPE
-         *  
-         *  --------------------------------------------------------------*/
-
-        $groupes = [];
-        for ($i = 0; $i < 10; $i++) {
-            $groupe = new Groupe();
-            $groupe->setNom($faker->word)
-                ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'))
-                ->setDescription($faker->text(100))
-                ->setCreateur($faker->randomElement($users));
-            $manager->persist($groupe);
-            array_push($groupes, $groupe);
         }
 
         $manager->flush();
