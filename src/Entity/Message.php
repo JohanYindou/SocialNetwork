@@ -26,6 +26,8 @@ class Message
     #[ORM\ManyToOne(inversedBy: 'messages')]
     private ?Conversation $conversation = null;
 
+    // Remettre status 
+
     public function getId(): ?int
     {
         return $this->id;

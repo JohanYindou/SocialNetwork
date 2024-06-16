@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\User;
+use App\Entity\Conversation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -58,6 +59,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->where('u.id != :currentUser')
             ->setParameter('currentUser', $currentUser->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllUsersExceptCurrentAndParticipants(User $currentUser, Conversation $conversation)
+    {
+        $participants = $conversation->getParticipants();
+
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :currentUser')
+            ->andWhere('u.id NOT IN (:participants)')
+            ->setParameter('currentUser', $currentUser->getId())
+            ->setParameter('participants', $participants)
             ->getQuery()
             ->getResult();
     }

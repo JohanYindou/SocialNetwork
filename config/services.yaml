@@ -7,7 +7,15 @@ parameters:
     'upload_profilePictures': '%kernel.project_dir%/public/uploads/users'
     'upload_medias': '%kernel.project_dir%/public/uploads/medias'
 services:
-    # default configuration for services in *this* file
+    App\Controller\MessagesController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+    
+    App\Controller\ConversationController:
+        arguments:
+            $messagesController: '@App\Controller\MessagesController'
+            $entityManager: '@doctrine.orm.entity_manager'
+            
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.

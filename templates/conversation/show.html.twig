@@ -1,50 +1,65 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Conversation avec
-{% for participant in participants %}
-	{{ participant.username }}
-	{% if not loop.last %},
-	{% endif %}
-{% endfor %}
-
+{% block title %}
+    Conversation avec
+    {% for participant in participants %}
+        {{ participant.username }}
+        {% if not loop.last %},
+        {% endif %}
+    {% endfor %}
 {% endblock %}
 
 {% block body %}
-	<div class="container-fluid d-flex flex-column vh-100 p-2">
-		<div class="row flex-grow-1">
-			<div class="d-flex align-items-stretch">
-				{% include 'components/sidebar.html.twig' %}
+    <div class="container-fluid d-flex flex-column vh-100 p-2">
+        <div class="row flex-grow-1">
+            <div class="d-flex align-items-stretch">
+                {% include 'components/sidebar.html.twig' %}
 
-				<div class="col-md-6 border-start border-end border-light d-flex flex-column p-3 overflow-auto">
-					<h1 class="mb-4">Messages avec
-						{% for participant in participants %}
-							{{ participant.username }}
-							{% if not loop.last %},
-							{% endif %}
-						{% endfor %}
-					</h1>
-					<ul class="list-group mb-4">
-						{% for message in conversation.messages %}
-							<li class="list-group-item">
-								<strong>{{ message.utilisateur.username }}:</strong>
-								{{ message.contenu }}
-								<span class="text-muted float-end">{{ message.createdAt|date('d/m/Y H:i') }}</span>
-							</li>
-						{% endfor %}
-					</ul>
+                <div class="col-md-8 col-lg-6 mx-auto border-start border-end border-light d-flex flex-column p-3 overflow-auto">
+                    <h1 class="mb-4">Messages avec
+                        {% for participant in participants %}
+                            {{ participant.username }}
+                            {% if not loop.last %},
+                            {% endif %}
+                        {% endfor %}
+                    </h1>
 
-					<form action="{{ path('app_message') }}" method="post" class="d-flex flex-column gap-3">
-						<input type="hidden" name="conversation_id" value="{{ conversation.id }}">
-						<div class="form-floating">
-							<textarea class="form-control" placeholder="Write your message here" name="contenu" id="messageContent" style="height: 100px"></textarea>
-							<label for="messageContent">Write your message here</label>
-						</div>
-						<button type="submit" class="btn btn-primary">Send</button>
-					</form>
-				</div>
-				{% include 'components/right-sidebar.html.twig' %}
-			</div>
-		</div>
-	</div>
+                    <div class="col-lg-4 text-center">
+                        <h2 class="mb-3">Ajouter un participant</h2>
+                        <form action="{{ path('conversation_add_participant', {'id': conversation.id}) }}" method="POST" class="mb-4">
+                            <div class="input-group">
+                                <select name="user_id" class="form-select">
+                                    {% for user in all_users %}
+                                        <option value="{{ user.id }}">{{ user.username }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-primary">Ajouter</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <ul class="list-group mb-4">
+                        {% for message in conversation.messages %}
+                            <li class="list-group-item">
+                                <strong>{{ message.utilisateur.username }}:</strong>
+                                {{ message.contenu }}
+                                <span class="text-muted float-end">{{ message.createdAt|date('d/m/Y H:i') }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <form action="{{ path('app_message') }}" method="post" class="mb-4">
+                        <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+                        <div class="form-floating">
+                            <textarea class="form-control" name="contenu" id="messageContent" style="height: 100px" placeholder="Écrivez votre message ici..."></textarea>
+                            <label for="messageContent">Message</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+                    </form>
+                </div>
+
+                {% include 'components/right-sidebar.html.twig' %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
-
