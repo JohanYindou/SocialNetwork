@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Publication;
 use App\Entity\Notification;
 use App\Entity\User;
+use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,10 @@ class LikeController extends AbstractController
     }
 
     #[Route('/like/{id}', name: 'like_post', methods: ['POST'])]
-    public function like(Publication $publication, EntityManagerInterface $entityManager): JsonResponse
+    public function like(
+        Publication $publication, 
+        EntityManagerInterface $entityManager, 
+        NotificationService $notificationService): JsonResponse
     {
         $user = $this->security->getUser();
 
@@ -46,17 +50,11 @@ class LikeController extends AbstractController
             $publication->addLikedBy($user);
             $publication->incrementLikes();
 
-            // Créer et persister une notification
-            $notification = new Notification();
-            $notification->setUser($publication->getAuteur());
-            $notification->setType('like');
-            $notification->setMessage($user->getUsername() . ' a liké votre post');
-            $notification->setCreatedAt(new \DateTime());
-
-            $entityManager->persist($notification);
+            $message = sprintf('%s a aimé votre publication.', $user->getUsername());
+            $notificationService->createNotification($publication->getAuteur(), Notification::TYPE_LIKE, $message);
         }
 
-        $entityManager->persist($publication);
+        // $entityManager->persist($publication);
         $entityManager->flush();
 
         return new JsonResponse(['likes' => $publication->getLikes()]);

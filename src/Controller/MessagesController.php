@@ -2,23 +2,28 @@
 
 namespace App\Controller;
 
-use App\Entity\Conversation;
-use App\Entity\Message;
 use App\Entity\User;
+use App\Entity\Message;
+use App\Entity\Conversation;
+use App\Entity\Notification;
 use App\Repository\UserRepository;
+use App\Service\NotificationService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MessagesController extends AbstractController
 {
     private $entityManager;
+    private $security;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, Security $security)
     {
         $this->entityManager = $entityManager;
+        $this->security = $security;
     }
 
     public function createSystemMessage(
@@ -56,10 +61,13 @@ class MessagesController extends AbstractController
     #[Route('/message/send', name: 'app_message', methods: ['POST'])]
     public function send(
         EntityManagerInterface $entityManager,
-        Request $request
+        Request $request,
+        NotificationService $notificationService
     ): Response {
         $conversationId = $request->request->get('conversation_id');
         $contenu = $request->request->get('contenu');
+
+        $user = $this->security->getUser();
 
         if (!$conversationId) {
             throw $this->createNotFoundException('Conversation not found');
@@ -78,6 +86,19 @@ class MessagesController extends AbstractController
         $message->setUtilisateur($this->getUser());
 
         $entityManager->persist($message);
+
+
+        $message = sprintf('%s a vous as envoyé un nouveau message.', $user->getUsername());
+        // Créer la notification pour chaque participant sauf l'expéditeur
+        foreach ($conversation->getParticipants() as $participant) {
+            if ($participant !== $this->getUser()) {
+                $notificationService->createNotification(
+                    $participant,
+                    Notification::TYPE_MESSAGE,
+                    $message
+                );
+            }
+        }
         $entityManager->flush();
 
         return $this->redirectToRoute('conversation_show', ['id' => $conversationId]);

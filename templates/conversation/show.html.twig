@@ -51,8 +51,7 @@
                     <form action="{{ path('app_message') }}" method="post" class="mb-4">
                         <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
                         <div class="form-floating">
-                            <textarea class="form-control" name="contenu" id="messageContent" style="height: 100px" placeholder="Écrivez votre message ici..."></textarea>
-                            <label for="messageContent">Message</label>
+                            <textarea class="form-control" name="contenu" id="messageContent" style="height: 100px"></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Envoyer</button>
                     </form>
