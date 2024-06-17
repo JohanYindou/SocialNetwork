@@ -15,6 +15,9 @@ services:
         arguments:
             $messagesController: '@App\Controller\MessagesController'
             $entityManager: '@doctrine.orm.entity_manager'
+    App\Service\NotificationService:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
             
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 class Notification
 {
+    const TYPE_LIKE = 'like';
+    const TYPE_COMMENT = 'comment';
+    const TYPE_MESSAGE = 'message';
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

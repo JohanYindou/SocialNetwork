@@ -154,7 +154,7 @@ class Publication
         return $this->auteur;
     }
 
-    public function setAuteur(?User $auteur): static
+    public function setAuteur(?User $auteur): self
     {
         $this->auteur = $auteur;
 

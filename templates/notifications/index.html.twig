@@ -12,17 +12,32 @@
 			{% include 'components/sidebar.html.twig' %}
 			<!-- Contenu de la deuxième colonne -->
             <div class="col-md-6">
-                <h1>Notifications</h1>
-                <ul class="list-group">
-                    {% for notification in notifications %}
-                        <li class="list-group-item">
-                            {{ notification.message }}
-                            <span class="text-muted float-end">{{ notification.createdAt|date('d/m/Y H:i') }}</span>
-                        </li>
-                    {% else %}
-                        <li class="list-group-item">Aucune notification</li>
-                    {% endfor %}
-                </ul>
+                <div class="card shadow-sm mb-4 mt-3">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="h4 mb-0">Notifications</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            {% for notification in notifications %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        {{ notification.message }}
+                                        <br>
+                                        <small class="text-muted">{{ notification.createdAt|date('d/m/Y H:i') }}</small>
+                                    </div>
+                                    {% if not notification.isRead %}
+                                        <span class="badge bg-primary ms-2">Nouvelle</span>
+                                    {% endif %}
+                                </li>
+                            {% else %}
+                                <li class="list-group-item text-center">Aucune notification</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="card-footer text-end">
+                        <a href="{{ path('notifications_mark_as_read') }}" class="btn btn-primary btn-sm">Marquer toutes comme lues</a>
+                    </div>
+                </div>
             </div>
 			<!-- Contenu de la troisième colonne -->
 			{% include 'components/right-sidebar.html.twig' %}

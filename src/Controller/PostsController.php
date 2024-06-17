@@ -2,31 +2,45 @@
 
 namespace App\Controller;
 
-use App\Entity\Publication;
 use App\Entity\Commentaire;
-use App\Form\PublicationType;
+use App\Entity\Publication;
+use App\Entity\Notification;
+use App\Entity\User;
 use App\Form\CommentaireType;
+use App\Form\PublicationType;
+use App\Service\NotificationService;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\PublicationRepository;
 use App\Repository\CommentaireRepository;
+use App\Repository\PublicationRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 
 class PostsController extends AbstractController
 {
+    private $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
+
     #[Route('/post/{id}', name: 'app_post')]
     public function post(
         Request $request,
         PublicationRepository $publicationRepository,
         EntityManagerInterface $em,
+        NotificationService $notificationService
     ): Response {
 
-        $publicationId = $request->attributes->get('id'); // Get the ID from the route parameter
-        $publication = $publicationRepository->findById($publicationId); // Find the publication by ID
-        
+        $user = $this->security->getUser();
+
+        $publicationId = $request->attributes->get('id');
+        $publication = $publicationRepository->findById($publicationId);
+
         if (!$publication) {
             throw $this->createNotFoundException('La publication n\'existe pas.');
         }
@@ -40,6 +54,10 @@ class PostsController extends AbstractController
             $commentaire->setCreatedAt(new \DateTime());
 
             $em->persist($commentaire);
+
+            $message = sprintf('%s a commenté votre publication.', $user->getUsername());
+            $notificationService->createNotification($publication->getAuteur(), Notification::TYPE_COMMENT, $message);
+
             $em->flush();
 
             return $this->redirectToRoute('app_post', ['id' => $publicationId]);
@@ -144,7 +162,6 @@ class PostsController extends AbstractController
         ]);
     }
 
-
     #[Route('/post/delete/{id}', name: 'app_post_delete', methods: ['POST'])]
     public function deletePost(
         int $id,
@@ -168,7 +185,7 @@ class PostsController extends AbstractController
         Request $request,
         PublicationRepository $publications,
         EntityManagerInterface $em,
-        CommentaireRepository $comments,
+        CommentaireRepository $comments
     ): Response {
         $comment = $comments->find($request->attributes->get('id'));
         // Récupérer l'id de la route du commentaire  et l'afficher
@@ -176,7 +193,5 @@ class PostsController extends AbstractController
             'comment' => $comment,
         ]);
     }
-    
-
 }
 

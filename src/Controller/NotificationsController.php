@@ -7,6 +7,7 @@ use App\Repository\NotificationRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 
 class NotificationsController extends AbstractController
 {
@@ -16,13 +17,13 @@ class NotificationsController extends AbstractController
         $user = $this->getUser();
         $notifications = $notificationRepository->findBy(['user' => $user, 'isRead' => false]);
 
-        return $this->render('notification/index.html.twig', [
+        return $this->render('notifications/index.html.twig', [
             'notifications' => $notifications,
         ]);
     }
 
     #[Route('/notifications/mark-as-read', name: 'notifications_mark_as_read')]
-    public function markAsRead(NotificationRepository $notificationRepository, EntityManagerInterface $entityManager)
+    public function markAsRead(NotificationRepository $notificationRepository, EntityManagerInterface $entityManager, Request $request)
     {
         $user = $this->getUser();
         $notifications = $notificationRepository->findBy(['user' => $user, 'isRead' => false]);
@@ -33,7 +34,7 @@ class NotificationsController extends AbstractController
 
         $entityManager->flush();
 
-        return $this->redirectToRoute('notifications');
+        return $this->redirectToRoute('app_notifications');
     }
     
     // A mettre dans la vue pour marqué comme lu

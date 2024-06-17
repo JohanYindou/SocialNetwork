@@ -6,6 +6,7 @@
 				Home
 			</li>
 		</a>
+
 		<a href="{{ path('app_recherche') }}" class="text-decoration-none">
 			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-search me-2"></i>
@@ -23,6 +24,12 @@
 		{% endif %}
 
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			<a href="{{ path('app_notifications') }}" class="text-decoration-none">
+				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+					<i class="bi bi-bell-fill me-2"></i>
+					Notifications
+				</li>
+			</a>
 			<a href="{{ path('conversation_index') }}" class="text-decoration-none">
 				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 					<i class="bi bi-envelope-fill me-2"></i>
