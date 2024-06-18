@@ -17,13 +17,13 @@ class RechercheController extends AbstractController
         $searchForm = $this->createForm(RechercheType::class);
         $searchForm->handleRequest($request);
 
-        $searchTerm = $request->query->get('searchTerm', '');
+        $publications = [];
+        $searchTerm = '';
 
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $searchTerm = $searchForm->get('search_term')->getData();
+            $publications = $publicationRepository->findBySearchTerm($searchTerm);
         }
-
-        $publications = $searchTerm ? $publicationRepository->findBySearchTerm($searchTerm) : $publicationRepository->findAll();
 
         return $this->render('recherche/index.html.twig', [
             'publications' => $publications,

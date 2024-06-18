@@ -16,6 +16,7 @@ class RechercheType extends AbstractType
                 'label' => false,
                 'attr' => [
                     'placeholder' => 'Rechercher...',
+                    'class' => 'form-control',
                 ],
             ]);
     }

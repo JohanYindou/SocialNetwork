@@ -10,56 +10,63 @@
 			<div class="d-flex align-items-stretch">
 				{% include 'components/sidebar.html.twig' %}
 				<div class="col-md-6 border-start border-end border-white p-2 overflow-auto">
-					<form class="ms-2 mb-4" role="search" action="{{ path('app_recherche') }}" method="GET">
-						{{ form_widget(searchForm) }}
+					<form class="d-flex ms-2 mb-4" role="search" action="{{ path('app_recherche') }}" method="GET">
+						<div class="input-group">
+							{{ form_widget(searchForm) }}
+							<button class="btn btn-primary" type="submit">Rechercher</button>
+						</div>
 					</form>
-					<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
-					{% if publications is empty %}
-						<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
+					{% if searchTerm is empty %}
+						<h2>Aucune recherche effectuée</h2>
 					{% else %}
-						<p>Il y a
-							{{ publications|length }}
-							publications correspondantes</p>
-						{% for publication in publications %}
-							<div class="card mb-3">
-								<div class="card-header">
-									<a href="/profil" class="text-decoration-none text-dark">
-										<div class="d-flex align-items-center">
-											<img src="{{ publication.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+						<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
+						{% if publications is empty %}
+							<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
+						{% else %}
+							<p>Il y a
+								{{ publications|length }}
+								publications correspondantes</p>
+							{% for publication in publications %}
+								<div class="card mb-3">
+									<div class="card-header">
+										<a href="/profil" class="text-decoration-none text-dark">
+											<div class="d-flex align-items-center">
+												<img src="{{ publication.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+												<div>
+													<p class="mb-0">{{ publication.auteur.nom }}</p>
+													<p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
+													<small class="text-muted">Posté le
+														{{ publication.createdAt|date('d/m/Y') }}
+														à
+														{{ publication.createdAt|date('H:i') }}</small>
+												</div>
+											</div>
+										</a>
+									</div>
+									<a href="{{ path('app_post', {'id': publication.id}) }}" class="text-decoration-none text-dark">
+										<div class="card-body">
+											<p class="card-text">{{ publication.contenu }}</p>
+											{% if publication.media %}
+												<img src="{{ publication.media }}" class="img-fluid rounded" alt="Publication media">
+											{% endif %}
+										</div>
+										<div class="card-footer d-flex justify-content-between">
 											<div>
-												<p class="mb-0">{{ publication.auteur.nom }}</p>
-												<p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
-												<small class="text-muted">Posté le
-													{{ publication.createdAt|date('d/m/Y') }}
-													à
-													{{ publication.createdAt|date('H:i') }}</small>
+												<a href="#" class="btn btn-link text-decoration-none">
+													<i class="bi bi-chat"></i>
+													Commentaires</a>
+												<a href="#" class="btn btn-link text-decoration-none">
+													<i class="bi bi-heart"></i>
+													Like</a>
+												<a href="#" class="btn btn-link text-decoration-none">
+													<i class="bi bi-share"></i>
+													Partager</a>
 											</div>
 										</div>
 									</a>
 								</div>
-								<a href="{{ path('app_post', {'id': publication.id}) }}" class="text-decoration-none text-dark">
-									<div class="card-body">
-										<p class="card-text">{{ publication.contenu }}</p>
-										{% if publication.media %}
-											<img src="{{ publication.media }}" class="img-fluid rounded" alt="Publication media">
-										{% endif %}
-									</div>
-									<div class="card-footer d-flex justify-content-between">
-										<div>
-											<a href="#" class="btn btn-link text-decoration-none">
-												<i class="bi bi-chat"></i>
-												Commentaires</a>
-											<a href="#" class="btn btn-link text-decoration-none">
-												<i class="bi bi-heart"></i>
-												Like</a>
-											<a href="#" class="btn btn-link text-decoration-none">
-												<i class="bi bi-share"></i>
-												Partager</a>
-										</div>
-									</div>
-								</a>
-							</div>
-						{% endfor %}
+							{% endfor %}
+						{% endif %}
 					{% endif %}
 				</div>
 				{% include 'components/right-sidebar.html.twig' %}
