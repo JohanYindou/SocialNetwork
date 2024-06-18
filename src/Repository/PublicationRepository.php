@@ -39,4 +39,15 @@ class PublicationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    /**
+     * @return Publication[] Returns an array of Publication objects
+     */
+    public function findAllOrderedByDate(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.created_at', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
