@@ -32,6 +32,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('SocialNetwork')
+            ->setFaviconPath('/uploads/medias/Logo_SocialNetwork.png')
             ->renderContentMaximized(); // Optionally maximize the content area
     }
 
