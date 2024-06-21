@@ -1,5 +1,9 @@
 <div class="col-md-3 d-flex flex-column p-2 bg-light">
 	<ul class="list-unstyled flex-grow-1 p-2">
+		<li class="mb-2 p-3 d-flex justify-content-center">
+			<img src="/uploads/medias/Logo_SocialNetwork.png" style="max-width: 45%; height: auto;" alt="Logo de SocialNetwork">
+		</li>
+	
 		<a href="{{ path('app_home') }}" class="text-decoration-none">
 			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-house-door-fill me-2"></i>
@@ -52,7 +56,7 @@
 			<div class="row align-items-center">
 				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
 					<div class="col-auto">
-						<img src="{{ app.user.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+						<img src="{{ app.user.ProfilPicture }}" alt="Photo de profil" class="rounded-circle" style="width: 50px; height: 50px;">
 					</div>
 					<div class="col">
 						<div class="dropdown">
