@@ -7,170 +7,166 @@
 	<div
 		class="container-fluid d-flex flex-column vh-100 p-2">
 		<!-- Utilisez les classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
-		<div
-			class="row flex-grow-1">
+		<div class="row flex-grow-1">
 			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
-			<div
-				class="d-flex align-items-stretch">     
-				<!-- Contenu de la première colonne -->
-				{% include 'components/sidebar.html.twig' %}
-				<!-- Contenu de la deuxième colonne -->
-				<div
-					class="col-md-6 border-start border-end border-white d-flex flex-column p-2 overflow-auto">
-					<!-- Contenu de la deuxième colonne -->
-					<ul class="list-unstyled">
-                    <!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <a href="{{ path('app_user_profil', {id: publication.auteur.id}) }}" style="text-decoration: none; color: inherit;">
-                                        <ul class="list-unstyled d-flex">
-                                            <li class="p-2">
-                                                <img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
-                                            </li>
-                                            <li class="p-2">
-                                                <p class="mb-0">{{ publication.auteur.nom }}</p>
-                                                <p class="mb-0">@{{ publication.auteur.username }}</p>
-                                            </li>
-                                            <li class="p-2 d-flex align-items-center">
-                                                <p>Posted on {{ publication.createdAt|date('d/m/Y') }} at {{ publication.createdAt|date('H:i') }}</p>
-                                            </li>
-                                        </ul>
-                                    </a>
-                                </div>
-                                <a style="text-decoration: none; color: inherit;">
-                                    <div class="card-body">
-                                        <p>{{ publication.contenu }}</p>
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            {% if publication.media %}
-                                                <img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
-                                            {% endif %}
-                                        </div>
-                                    </div>
-									<div class="card-footer d-flex justify-content-center">
-										<div class="mx-4">
-											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-												<i class="bi bi-chat"></i>
-												<span>{{ publication.commentaires|length }}</span>
-											</a>
-										</div>
-										<div class="mx-4">
-											<button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
-												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-												<span>{{ publication.likes }}</span>
-											</button>
-										</div>
-										<div class="mx-4">
-											<div class="dropdown">
-												<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-													<i class="bi bi-share"></i>
-													Partager
-												</button>
-												<ul class="dropdown-menu" aria-labelledby="shareDropdown">
-													<li>
-														<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
-													</li>
-													<li>
-														<button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
-													</li>
-												</ul>
-											</div>
-										</div>
-									</div>
 
-                                </a>
-                            </div>
-                            
-                            <!-- Section commentaire -->                        
-							<div class="card">
-								<div class="comment-form mt-4 p-3 border rounded">
-									{{ form_start(commentForm, {'attr': {'class': 'form-group'}}) }}
-									
-									<div class="mb-3">
-										{{ form_label(commentForm.contenu, null, {'label_attr': {'class': 'form-label'}}) }}
-										{{ form_widget(commentForm.contenu, {'attr': {'class': 'form-control', 'placeholder': 'Écrire un commentaire...'}}) }}
-										{{ form_errors(commentForm.contenu) }}
-									</div>
-									
-									<div class="d-flex justify-content-end">
-										<button type="submit" class="btn btn-primary">Commenter</button>
-									</div>
-									
-									{{ form_end(commentForm) }}
+			<!-- Contenu de la première colonne -->
+			{% include 'components/sidebar.html.twig' %}
+			<!-- Contenu de la deuxième colonne -->
+				<div class="col-md-6 offset-md-3 main-content d-flex flex-column p-2 overflow-auto"> <!-- Contenu de la deuxième colonne -->
+				<ul class="list-unstyled">
+					<!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
+					<div class="card">
+						<div class="card-header">
+							<a href="{{ path('app_user_profil', {id: publication.auteur.id}) }}" style="text-decoration: none; color: inherit;">
+								<ul class="list-unstyled d-flex">
+									<li class="p-2">
+										<img src="{{publication.auteur.ProfilPicture}}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+									</li>
+									<li class="p-2">
+										<p class="mb-0">{{ publication.auteur.nom }}</p>
+										<p class="mb-0">@{{ publication.auteur.username }}</p>
+									</li>
+									<li class="p-2 d-flex align-items-center">
+										<p>Posted on
+											{{ publication.createdAt|date('d/m/Y') }}
+											at
+											{{ publication.createdAt|date('H:i') }}</p>
+									</li>
+								</ul>
+							</a>
+						</div>
+						<a style="text-decoration: none; color: inherit;">
+							<div class="card-body">
+								<p>{{ publication.contenu }}</p>
+								<div class="d-flex justify-content-center align-items-center">
+									{% if publication.media %}
+										<img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
+									{% endif %}
 								</div>
-								<ul class="list-group list-group-flush">
-									{% for commentaire in publication.commentaires %}
-										<a href="{{ path('app_comment', {'id': publication.id}) }}" class="text-decoration-none text-dark">
-											<li class="list-group-item">
-												<div class="d-flex align-items-start">
+							</div>
+							<div class="card-footer d-flex justify-content-center">
+								<div class="mx-4">
+									<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+										<i class="bi bi-chat"></i>
+										<span>{{ publication.commentaires|length }}</span>
+									</a>
+								</div>
+								<div class="mx-4">
+									<button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
+										<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+										<span>{{ publication.likes }}</span>
+									</button>
+								</div>
+								<div class="mx-4">
+									<div class="dropdown">
+										<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+											<i class="bi bi-share"></i>
+											Partager
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="shareDropdown">
+											<li>
+												<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
+											</li>
+											<li>
+												<button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						</a>
+					</div>
+
+					<!-- Section commentaire -->
+					<div class="card">
+						<div class="comment-form mt-4 p-3 border rounded">
+							{{ form_start(commentForm, {'attr': {'class': 'form-group'}}) }}
+
+							<div class="mb-3">
+								{{ form_label(commentForm.contenu, null, {'label_attr': {'class': 'form-label'}}) }}
+								{{ form_widget(commentForm.contenu, {'attr': {'class': 'form-control', 'placeholder': 'Écrire un commentaire...'}}) }}
+								{{ form_errors(commentForm.contenu) }}
+							</div>
+
+							<div class="d-flex justify-content-end">
+								<button type="submit" class="btn btn-primary">Commenter</button>
+							</div>
+
+							{{ form_end(commentForm) }}
+						</div>
+						<ul class="list-group list-group-flush">
+							{% for commentaire in publication.commentaires %}
+								<a href="{{ path('app_comment', {'id': publication.id}) }}" class="text-decoration-none text-dark">
+									<li class="list-group-item">
+										<div class="d-flex align-items-start">
+											<div>
+												<img src="{{ commentaire.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+											</div>
+											<div class="ms-3 w-100">
+												<div class="d-flex justify-content-between align-items-center">
 													<div>
-														<img src="{{ commentaire.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+														<strong>{{ commentaire.auteur.nom }}</strong>
+														<span class="text-muted">@{{ commentaire.auteur.username }}</span>
 													</div>
-													<div class="ms-3 w-100">
-														<div class="d-flex justify-content-between align-items-center">
-															<div>
-																<strong>{{ commentaire.auteur.nom }}</strong>
-																<span class="text-muted">@{{ commentaire.auteur.username }}</span>
-															</div>
-															<div class="text-muted">
-																<small>{{ commentaire.createdAt|date('d/m/Y') }}
-																	{{ commentaire.createdAt|date('H:i') }}</small>
-															</div>
-														</div>
-														<p class="mt-2">{{ commentaire.contenu }}</p>
-														<div class="d-flex justify-content-start">
-															<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
-																<i class="bi bi-chat"></i>
-															</a>
-															<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
-																<i class="bi bi-heart"></i>
-															</a>
-															<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-																<i class="bi bi-share"></i>
-															</a>
-														</div>
+													<div class="text-muted">
+														<small>{{ commentaire.createdAt|date('d/m/Y') }}
+															{{ commentaire.createdAt|date('H:i') }}</small>
 													</div>
 												</div>
-											</li>
-										</a>
-									{% endfor %}
-								</ul>
-							</div>
-					</ul>
-				</div>   
+												<p class="mt-2">{{ commentaire.contenu }}</p>
+												<div class="d-flex justify-content-start">
+													<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
+														<i class="bi bi-chat"></i>
+													</a>
+													<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
+														<i class="bi bi-heart"></i>
+													</a>
+													<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
+														<i class="bi bi-share"></i>
+													</a>
+												</div>
+											</div>
+										</div>
+									</li>
+								</a>
+							{% endfor %}
+						</ul>
+					</div>
+				</ul>
 			</div>
 		</div>
 	</div>
 	<script>
 		document.querySelectorAll('.like-btn').forEach(button => {
-			button.addEventListener('click', () => {
-				const publicationId = button.dataset.id;
+button.addEventListener('click', () => {
+const publicationId = button.dataset.id;
 
-				fetch(`/like/${publicationId}`, {
-					method: 'POST',
-					headers: {
-						'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
-						'Content-Type': 'application/json'
-					}
-				})
-				.then(response => response.json())
-				.then(data => {
-					if (data.likes !== undefined) {
-						button.querySelector('span').textContent = data.likes;
-						const icon = button.querySelector('i');
-						icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
-					}
-				});
-			});
-		});
+fetch (`/like/${publicationId}`, {
+method: 'POST',
+headers: {
+'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+'Content-Type': 'application/json'
+}
+}).then(response => response.json()).then(data => {
+if (data.likes !== undefined) {
+button.querySelector('span').textContent = data.likes;
+const icon = button.querySelector('i');
+icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+}
+});
+});
+});
 
-		function copyToClipboard() {
-			var copyText = document.getElementById('shareLink');
-			copyText.select();
-			copyText.setSelectionRange(0, 99999); // For mobile devices
+function copyToClipboard() {
+var copyText = document.getElementById('shareLink');
+copyText.select();
+copyText.setSelectionRange(0, 99999); // For mobile devices
 
-			document.execCommand("copy");
+document.execCommand("copy");
 
-			alert("Lien copié: " + copyText.value);
-		}
+alert("Lien copié: " + copyText.value);
+}
 	</script>
 {% endblock %}

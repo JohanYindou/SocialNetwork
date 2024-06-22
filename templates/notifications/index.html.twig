@@ -5,12 +5,10 @@
 {% block body %}
 <div class="container-fluid d-flex flex-column vh-100 p-2">
 	<div class="row flex-grow-1">
-		<div
-			class="d-flex align-items-stretch">
 			<!-- Contenu de la première colonne -->
 			{% include 'components/sidebar.html.twig' %}
 			<!-- Contenu de la deuxième colonne -->
-            <div class="col-md-6">
+            <div class="col-md-6 offset-md-3 main-content">
                 <div class="mb-4 mt-3">
                     <h1 class="mb-4">Notifications</h1>
                     <div class="card-body">
@@ -36,7 +34,6 @@
                     </div>
                 </div>
             </div>
-		</div>
 	</div>
 </div>
 

@@ -1,9 +1,10 @@
-<div class="col-md-3 d-flex flex-column p-2 bg-light">
+{# Version grand écran (md et plus) #}
+<div class="col-md-3 d-none d-md-block d-flex flex-column p-2 bg-light position-fixed top-0 sidebar">
 	<ul class="list-unstyled flex-grow-1 p-2">
 		<li class="mb-2 p-3 d-flex justify-content-center">
 			<img src="/uploads/medias/Logo_SocialNetwork.png" style="max-width: 45%; height: auto;" alt="Logo de SocialNetwork">
 		</li>
-	
+
 		<a href="{{ path('app_home') }}" class="text-decoration-none">
 			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-house-door-fill me-2"></i>
@@ -51,7 +52,6 @@
 			</li>
 		{% endif %}
 
-
 		<li class="border rounded mb-2 p-3 bg-white shadow-sm">
 			<div class="row align-items-center">
 				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
@@ -81,5 +81,83 @@
 			</div>
 		</li>
 	</ul>
+</div>
+
+{# Version mobile (moins que md) #}
+<div class="navbar d-md-none bg-light">
+	<div class="container-fluid">
+		<div class="d-flex justify-content-between align-items-center w-100">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMobile" aria-controls="navbarMobile" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<a class="navbar-brand d-md-none d-flex justify-content-end" href="#">
+				<img src="/uploads/medias/Logo_SocialNetwork.png" alt="Logo" width="20%" height="auto" class="d-inline-block align-text-top">
+			</a>
+		</div>
+		<div class="collapse navbar-collapse" id="navbarMobile">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item">
+					<a class="nav-link text-primary" href="{{ path('app_home') }}">
+						<i class="bi bi-house-door-fill me-2"></i>
+						Home
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link text-primary" href="{{ path('app_recherche') }}">
+						<i class="bi bi-search me-2"></i>
+						Recherche
+					</a>
+				</li>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') and 'ROLE_ADMIN' in app.user.roles %}
+					<li class="nav-item">
+						<a class="nav-link text-primary" href="{{ path('admin') }}">
+							<i class="bi bi-speedometer2 me-2"></i>
+							Dashboard
+						</a>
+					</li>
+				{% endif %}
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<li class="nav-item">
+						<a class="nav-link text-primary" href="{{ path('app_notifications') }}">
+							<i class="bi bi-bell-fill me-2"></i>
+							Notifications
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-primary" href="{{ path('conversation_index') }}">
+							<i class="bi bi-envelope-fill me-2"></i>
+							Messages
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link text-primary" href="{{ path('app_profil') }}">
+							<i class="bi bi-person-fill me-2"></i>
+							Profil
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-primary w-100" href="{{ path('app_new_post') }}">Poster</a>
+					</li>
+				{% else %}
+					<li class="nav-item text-primary">
+						<a href="{{ path('app_login') }}" class="nav-link btn btn-primary">Se connecter</a>
+					</li>
+				{% endif %}
+				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+					<li class="nav-item dropdown">
+						<a class="nav-link text-primary dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							<img src="{{ app.user.ProfilPicture }}" alt="Photo de profil" class="rounded-circle" style="width: 32px; height: 32px;">
+							{{ app.user.nom }}
+						</a>
+						<ul class="dropdown-menu text-primary" aria-labelledby="navbarDropdown">
+							<li>
+								<a class="dropdown-item text-primary" href="{{ path('app_logout') }}">Déconnexion</a>
+							</li>
+						</ul>
+					</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
 </div>
 

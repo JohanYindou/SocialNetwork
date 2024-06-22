@@ -11,12 +11,10 @@
 	<div
 		class="row flex-grow-1">
 		<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
-		<div
-			class="d-flex align-items-stretch">
 			<!-- Contenu de la première colonne -->
 			{% include 'components/sidebar.html.twig' %}
 			<!-- Contenu de la deuxième colonne -->
-			<div class="col-md-6">
+			<div class="col-md-6 offset-md-3 main-content">
                 <h2>Créer un nouveau post</h2>
                 {{ form_start(form) }}
                     <div class="mb-3">
@@ -32,7 +30,6 @@
                     <button type="submit" class="btn btn-primary">Publier</button>
                 {{ form_end(form) }}
             </div>
-		</div>
 	</div>
 </div>
 

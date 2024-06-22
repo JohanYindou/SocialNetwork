@@ -4,32 +4,29 @@
 
 	<div class="container-fluid d-flex flex-column vh-100 p-2">
 		<div class="row flex-grow-1">
-			<div class="d-flex align-items-stretch">
-				{% include 'components/sidebar.html.twig' %}
-				<div class="col-md-6 border-end border-light p-3 overflow-auto">
-					<h1 class="mb-3">Messages</h1>
-					<a href="{{ path('conversation_new') }}" class="btn btn-primary mb-3">Nouvelle Conversation</a>
-					<ul class="list-group">
-						{% if conversations is empty %}
-							<p class="text-center text-muted">Aucune conversation existante.</p>
-						{% else %}
-							{% for conversation in conversations %}
-								<li class="list-group-item">
-									<a href="{{ path('conversation_show', {'id': conversation.id}) }}" class="text-decoration-none text-dark">
-										Conversation avec
-										{% for participant in conversation.getParticipantsExceptCurrent(app.user) %}
-											<strong>{{ participant.username }}</strong>
-											{% if not loop.last %},
-											{% endif %}
-										{% endfor %}
-									</a>
-								</li>
-							{% endfor %}
-						{% endif %}
-					</ul>
-				</div>
+			{% include 'components/sidebar.html.twig' %}
+			<div class="col-md-6 offset-md-3 main-content p-3 overflow-auto">
+				<h1 class="mb-3">Messages</h1>
+				<a href="{{ path('conversation_new') }}" class="btn btn-primary mb-3">Nouvelle Conversation</a>
+				<ul class="list-group">
+					{% if conversations is empty %}
+						<p class="text-center text-muted">Aucune conversation existante.</p>
+					{% else %}
+						{% for conversation in conversations %}
+							<li class="list-group-item">
+								<a href="{{ path('conversation_show', {'id': conversation.id}) }}" class="text-decoration-none text-dark">
+									Conversation avec
+									{% for participant in conversation.getParticipantsExceptCurrent(app.user) %}
+										<strong>{{ participant.username }}</strong>
+										{% if not loop.last %},
+										{% endif %}
+									{% endfor %}
+								</a>
+							</li>
+						{% endfor %}
+					{% endif %}
+				</ul>
 			</div>
 		</div>
 	</div>
 {% endblock %}
-
