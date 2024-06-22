@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
             ->setNom('Admin Johan')
             ->setUsername('adminj')
             ->setProfilPicture($faker->randomElement($picturePaths))
-            ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
+            ->setCreatedAt($faker->dateTimeBetween('-2 month', 'now'));
         $manager->persist($admin);
 
 
@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
             ->setNom('Système')
             ->setUsername('system')
             ->setProfilPicture($faker->randomElement($picturePaths))
-            ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
+            ->setCreatedAt($faker->dateTimeBetween('-3 month', '-2 month'));
         $manager->persist($system);
 
         // Set Utilisateurs
@@ -69,7 +69,7 @@ class AppFixtures extends Fixture
                 ->setNom($nom)
                 ->setUsername($username)
                 ->setProfilPicture($faker->randomElement($picturePaths))
-                ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
+                ->setCreatedAt($faker->dateTimeBetween('-2 month', 'now'));
             $manager->persist($user);
             array_push($users, $user);
         }
@@ -85,13 +85,13 @@ class AppFixtures extends Fixture
 
 
         $publications = [];
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $publication = new Publication();
             $publication->setContenu($faker->sentence(10))
                 ->setAuteur($faker->randomElement($users))
                 ->setMedia('https://placehold.co/600x400')
                 ->setLikes($faker->numberBetween(0, 100))
-                ->setCreatedAt($faker->dateTimeBetween('now', '+2 month'));
+                ->setCreatedAt($faker->dateTimeBetween('-2 month', 'now'));
             $manager->persist($publication);
             array_push($publications, $publication);
         }
@@ -103,7 +103,7 @@ class AppFixtures extends Fixture
          *  
          *  --------------------------------------------------------------*/
 
-        for ($i = 0; $i < 80; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $commentaire = new Commentaire();
             $commentaire->setContenu($faker->sentence(10))
                 ->setAuteur($faker->randomElement($users))

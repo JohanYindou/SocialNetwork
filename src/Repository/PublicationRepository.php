@@ -32,6 +32,7 @@ class PublicationRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->where('p.contenu LIKE :searchTerm')
             ->setParameter('searchTerm', '%' . $searchTerm . '%')
+            ->orderBy('p.created_at', 'DESC')
             ->getQuery()
             ->getResult();
     }

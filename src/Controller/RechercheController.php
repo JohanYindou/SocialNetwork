@@ -23,10 +23,6 @@ class RechercheController extends AbstractController
         // $searchTerm = '';
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // $searchTerm = $searchForm->get('searchTerm')->getData();
-            
-            // dd($searchData->q);
-            // dd($searchForm);
             $publications = $publicationRepository->findBySearchTerm($searchData->q);
         }
 
