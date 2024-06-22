@@ -10,18 +10,15 @@
 			<div class="d-flex align-items-stretch">
 				{% include 'components/sidebar.html.twig' %}
 				<div class="col-md-6 border-start border-end border-white p-2 overflow-auto">
-					<form class="d-flex ms-2 mb-4" role="search" action="{{ path('app_recherche') }}" method="GET">
-						<div class="input-group">
-							{{ form_widget(searchForm) }}
-							<button class="btn btn-primary" type="submit">Rechercher</button>
-						</div>
-					</form>
-					{% if searchTerm is empty %}
+					{% include 'components/search.html.twig' with {
+						form: form
+					} %}
+					{% if searchData is empty %}
 						<h2>Aucune recherche effectuée</h2>
 					{% else %}
-						<h2>Résultats de la recherche pour "{{ searchTerm }}"</h2>
+						<h2>Résultats de la recherche pour "{{ searchData }}"</h2>
 						{% if publications is empty %}
-							<p>Aucun résultat trouvé pour le terme de recherche "{{ searchTerm }}".</p>
+							<p>Aucun résultat trouvé pour le terme de recherche "{{ searchData }}".</p>
 						{% else %}
 							<p>Il y a
 								{{ publications|length }}

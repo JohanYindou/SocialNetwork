@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    <form class="d-flex ms-2 mb-4" role="search" action="{{ path('app_recherche') }}" method="GET">
+        <div class="input-group">
+            {{ form_widget(form.q) }}
+            <button class="btn btn-primary" type="submit">Rechercher</button>
+        </div>
+    </form>
+{{ form_end(form) }}
