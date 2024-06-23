@@ -14,6 +14,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 
 class CommentaireCrudController extends AbstractCrudController
 {
@@ -28,6 +29,7 @@ class CommentaireCrudController extends AbstractCrudController
             IdField::new('id')->hideOnForm(),
             TextField::new('contenu', 'Contenu'),
             AssociationField::new('publication', 'Publication')->hideOnForm(),
+            IntegerField::new('likes','Likes'),
             AssociationField::new('auteur', 'Auteur')->hideOnForm(),
         ];
 
