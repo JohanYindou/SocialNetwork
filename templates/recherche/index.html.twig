@@ -29,12 +29,11 @@
 										<div class="d-flex align-items-center">
 											<img src="{{ publication.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
 											<div>
-												<p class="mb-0">{{ publication.auteur.nom }}</p>
+												<p class="mb-0 fw-bold">{{ publication.auteur.nom }}</p>
 												<p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
-												<small class="text-muted">Posté le
-													{{ publication.createdAt|date('d/m/Y') }}
-													à
-													{{ publication.createdAt|date('H:i') }}</small>
+											</div>
+											<div class="ms-auto text-muted ms-3">
+												<small>{{ publication.createdAt|date('d/m/Y H:i') }}</small>
 											</div>
 										</div>
 									</a>
@@ -46,17 +45,34 @@
 											<img src="{{ publication.media }}" class="img-fluid rounded" alt="Publication media">
 										{% endif %}
 									</div>
-									<div class="card-footer d-flex justify-content-between">
-										<div>
-											<a href="#" class="btn btn-link text-decoration-none">
+									<div class="card-footer d-flex justify-content-center">
+										<div class="mx-4">
+											<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
 												<i class="bi bi-chat"></i>
-												Commentaires</a>
-											<a href="#" class="btn btn-link text-decoration-none">
-												<i class="bi bi-heart"></i>
-												Like</a>
-											<a href="#" class="btn btn-link text-decoration-none">
-												<i class="bi bi-share"></i>
-												Partager</a>
+												<span>{{ publication.commentaires|length }}</span>
+											</a>
+										</div>
+										<div class="mx-4">
+											<button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
+												<i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+												<span>{{ publication.likes }}</span>
+											</button>
+										</div>
+										<div class="mx-4">
+											<div class="dropdown">
+												<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+													<i class="bi bi-share"></i>
+													Partager
+												</button>
+												<ul class="dropdown-menu p-2 shadow" aria-labelledby="shareDropdown">
+													<li>
+														<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
+													</li>
+													<li>
+														<button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
+													</li>
+												</ul>
+											</div>
 										</div>
 									</div>
 								</a>
@@ -70,5 +86,35 @@
 			</div>
 		</div>
 	</div>
+
+
+	<script>
+		document.querySelectorAll('.like-btn').forEach(button => {
+button.addEventListener('click', () => {
+const publicationId = button.dataset.id;
+fetch (`/like/${publicationId}`, {
+method: 'POST',
+headers: {
+'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+'Content-Type': 'application/json'
+}
+}).then(response => response.json()).then(data => {
+if (data.likes !== undefined) {
+button.querySelector('span').textContent = data.likes;
+const icon = button.querySelector('i');
+icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+}
+});
+});
+});
+
+function copyToClipboard(elementId) {
+var copyText = document.getElementById(elementId);
+copyText.select();
+copyText.setSelectionRange(0, 99999); // For mobile devices
+document.execCommand("copy");
+alert("Lien copié: " + copyText.value);
+}
+	</script>
 
 {% endblock %}
