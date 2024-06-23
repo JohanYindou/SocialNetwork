@@ -1,7 +1,5 @@
 # SocialNetwork
 
-![SocialNetwork](/uploads/medias/Logo_SocialNetwork.png)
-
 ## Table des matières
 
   - [Description](#description)
