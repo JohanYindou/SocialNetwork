@@ -44,16 +44,16 @@
 						</div>
 						<div class="mx-4">
 							<div class="dropdown">
-								<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+								<button class="btn btn-link p-2 dropdown-toggle" style="text-decoration: none;" type="button" id="shareCommentDropdown{{ comment.id }}" data-bs-toggle="dropdown" aria-expanded="false">
 									<i class="bi bi-share"></i>
 									Partager
 								</button>
-								<ul class="dropdown-menu p-2 shadow" aria-labelledby="shareDropdown">
+								<ul class="dropdown-menu p-2 shadow" aria-labelledby="shareCommentDropdown{{ comment.id }}">
 									<li>
-										<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': comment.publication.id}) }}" readonly>
+										<input type="text" class="form-control" id="shareCommentLink{{ comment.id }}" value="{{ url('app_comment', {'id': comment.id}) }}" readonly>
 									</li>
 									<li>
-										<button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
+										<button class="dropdown-item" onclick="copyToClipboard('shareCommentLink{{ comment.id }}')">Copier le lien</button>
 									</li>
 								</ul>
 							</div>
@@ -63,6 +63,34 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		document.querySelectorAll('.like-comment-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const commentId = button.dataset.id;
+                fetch(`/like/comment/${commentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json()).then(data => {
+                    if (data.likes !== undefined) {
+                        button.querySelector('span').textContent = data.likes;
+                        const icon = button.querySelector('i');
+                        icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+                    }
+                });
+            });
+        });
+		function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+            alert("Lien copié: " + copyText.value);
+        }
+	</script>
 
 {% endblock %}
 
