@@ -9,12 +9,13 @@
 		<!-- Utilisez les classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
 		<div class="row flex-grow-1">
 			<!-- Utilisez la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
-
 			<!-- Contenu de la première colonne -->
 			{% include 'components/sidebar.html.twig' %}
 			<!-- Contenu de la deuxième colonne -->
-				<div class="col-md-6 offset-md-3 main-content d-flex flex-column p-2 overflow-auto"> <!-- Contenu de la deuxième colonne -->
-				<ul class="list-unstyled">
+				<div
+				class="col-md-6 offset-md-3 main-content d-flex flex-column p-2 overflow-auto"> <!-- Contenu de la deuxième colonne -->
+				<ul
+					class="list-unstyled">
 					<!-- Faire en sorte d'aggrandir la zone de texte et d'alligner correctement le bouton  -->
 					<div class="card">
 						<div class="card-header">
@@ -64,7 +65,7 @@
 											<i class="bi bi-share"></i>
 											Partager
 										</button>
-										<ul class="dropdown-menu" aria-labelledby="shareDropdown">
+										<ul class="dropdown-menu p-2 shadow" aria-labelledby="shareDropdown">
 											<li>
 												<input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
 											</li>
@@ -98,39 +99,53 @@
 						</div>
 						<ul class="list-group list-group-flush">
 							{% for commentaire in publication.commentaires %}
-								<a href="{{ path('app_comment', {'id': publication.id}) }}" class="text-decoration-none text-dark">
+								
 									<li class="list-group-item">
 										<div class="d-flex align-items-start">
 											<div>
-												<img src="{{ commentaire.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+												<a href="{{ path('app_user_profil', {id: commentaire.auteur.id}) }}">
+													<img src="{{ commentaire.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+												</a>
 											</div>
 											<div class="ms-3 w-100">
-												<div class="d-flex justify-content-between align-items-center">
-													<div>
-														<strong>{{ commentaire.auteur.nom }}</strong>
-														<span class="text-muted">@{{ commentaire.auteur.username }}</span>
+												<a href="{{ path('app_comment', {'id': publication.id}) }}" class="text-decoration-none text-dark">
+													<div class="d-flex justify-content-between align-items-center">
+														<div>
+															<strong>{{ commentaire.auteur.nom }}</strong>
+															<span class="text-muted">@{{ commentaire.auteur.username }}</span>
+														</div>
+														<div class="text-muted">
+															<small>{{ commentaire.createdAt|date('d/m/Y') }}
+																{{ commentaire.createdAt|date('H:i') }}</small>
+														</div>
 													</div>
-													<div class="text-muted">
-														<small>{{ commentaire.createdAt|date('d/m/Y') }}
-															{{ commentaire.createdAt|date('H:i') }}</small>
-													</div>
-												</div>
-												<p class="mt-2">{{ commentaire.contenu }}</p>
+													<p class="mt-2">{{ commentaire.contenu }}</p>
+												</a>
 												<div class="d-flex justify-content-start">
-													<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
-														<i class="bi bi-chat"></i>
-													</a>
-													<a href="#" class="btn btn-link p-0 me-4" style="text-decoration: none;">
-														<i class="bi bi-heart"></i>
-													</a>
-													<a href="#" class="btn btn-link p-0" style="text-decoration: none;">
-														<i class="bi bi-share"></i>
-													</a>
+													<button class="btn btn-link like-comment-btn p-0 me-4" style="text-decoration: none;" data-id="{{ commentaire.id }}">
+														<i class="bi {{ commentaire.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+														<span>{{ commentaire.likes }}</span>
+													</button>
+													<div class="dropdown">
+														<button class="btn btn-link p-2 dropdown-toggle" style="text-decoration: none;" type="button" id="shareCommentDropdown{{ commentaire.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+															<i class="bi bi-share"></i>
+															Partager
+														</button>
+														<ul class="dropdown-menu p-2 shadow" aria-labelledby="shareCommentDropdown{{ commentaire.id }}">
+															<li>
+																<input type="text" class="form-control" id="shareCommentLink{{ commentaire.id }}" value="{{ url('app_post', {'id': publication.id}) }}#comment-{{ commentaire.id }}" readonly>
+															</li>
+															<li>
+																<button class="dropdown-item" onclick="copyToClipboard('shareCommentLink{{ commentaire.id }}')">Copier le lien</button>
+															</li>
+														</ul>
+													</div>
+
 												</div>
 											</div>
 										</div>
 									</li>
-								</a>
+								
 							{% endfor %}
 						</ul>
 					</div>
@@ -140,33 +155,48 @@
 	</div>
 	<script>
 		document.querySelectorAll('.like-btn').forEach(button => {
-button.addEventListener('click', () => {
-const publicationId = button.dataset.id;
+            button.addEventListener('click', () => {
+                const publicationId = button.dataset.id;
+                fetch(`/like/${publicationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json()).then(data => {
+                    if (data.likes !== undefined) {
+                        button.querySelector('span').textContent = data.likes;
+                        const icon = button.querySelector('i');
+                        icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+                    }
+                });
+            });
+        });
 
-fetch (`/like/${publicationId}`, {
-method: 'POST',
-headers: {
-'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
-'Content-Type': 'application/json'
-}
-}).then(response => response.json()).then(data => {
-if (data.likes !== undefined) {
-button.querySelector('span').textContent = data.likes;
-const icon = button.querySelector('i');
-icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
-}
-});
-});
-});
-
-function copyToClipboard() {
-var copyText = document.getElementById('shareLink');
-copyText.select();
-copyText.setSelectionRange(0, 99999); // For mobile devices
-
-document.execCommand("copy");
-
-alert("Lien copié: " + copyText.value);
-}
+        document.querySelectorAll('.like-comment-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const commentId = button.dataset.id;
+                fetch(`/like/comment/${commentId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json()).then(data => {
+                    if (data.likes !== undefined) {
+                        button.querySelector('span').textContent = data.likes;
+                        const icon = button.querySelector('i');
+                        icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+                    }
+                });
+            });
+        });
+		function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId);
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+            document.execCommand("copy");
+            alert("Lien copié: " + copyText.value);
+        }
 	</script>
 {% endblock %}

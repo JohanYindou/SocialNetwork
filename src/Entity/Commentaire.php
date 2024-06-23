@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CommentaireRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,17 @@ class Commentaire
 
     #[ORM\ManyToOne(inversedBy: 'commentaires')]
     private ?User $auteur = null;
+
+    #[ORM\Column]
+    private ?int $likes = 0;
+
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedCommentaires')]
+    private Collection $likedBy;
+
+    public function __construct()
+    {
+        $this->likedBy = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +88,61 @@ class Commentaire
     public function setAuteur(?User $auteur): static
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getLikes(): ?int
+    {
+        return $this->likes;
+    }
+
+    public function setLikes(int $likes): static
+    {
+        $this->likes = $likes;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getLikedBy(): Collection
+    {
+        return $this->likedBy;
+    }
+
+    public function addLikedBy(User $likedBy): static
+    {
+        if (!$this->likedBy->contains($likedBy)) {
+            $this->likedBy->add($likedBy);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedBy(User $likedBy): static
+    {
+        $this->likedBy->removeElement($likedBy);
+
+        return $this;
+    }
+
+    public function likedByCurrentUser(User $user): bool
+    {
+        return $this->likedBy->contains($user);
+    }
+    
+    public function incrementLikes(): self
+    {
+        $this->likes++;
+
+        return $this;
+    }
+
+    public function decrementLikes(): self
+    {
+        $this->likes--;
 
         return $this;
     }

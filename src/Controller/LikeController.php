@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaire;
 use App\Entity\Publication;
 use App\Entity\Notification;
 use App\Entity\User;
@@ -32,7 +33,7 @@ class LikeController extends AbstractController
 
     #[Route('/like/{id}', name: 'like_post', methods: ['POST'])]
     public function like(
-        Publication $publication, 
+        Publication $publication,
         EntityManagerInterface $entityManager, 
         NotificationService $notificationService): JsonResponse
     {
@@ -53,10 +54,36 @@ class LikeController extends AbstractController
             $message = sprintf('%s a aimé votre publication.', $user->getUsername());
             $notificationService->createNotification($publication->getAuteur(), Notification::TYPE_LIKE, $message);
         }
-
-        // $entityManager->persist($publication);
         $entityManager->flush();
 
         return new JsonResponse(['likes' => $publication->getLikes()]);
+    }
+
+    #[Route('like/comment/{id}', 'like_comment', methods : ['POST'])]
+    public function likeComment(
+        Commentaire $commentaire,
+        EntityManagerInterface $entityManager, 
+        NotificationService $notificationService): JsonResponse
+    {
+        $user = $this->security->getUser();
+
+        // Vérification du type de l'utilisateur
+        if (!$user instanceof User) {
+            return new JsonResponse(['error' => 'Utilisateur non authentifié'], 403);
+        }
+
+        if ($commentaire->getLikedBy()->contains($user)) {
+            $commentaire->removeLikedBy($user);
+            $commentaire->decrementLikes();
+        } else {
+            $commentaire->addLikedBy($user);
+            $commentaire->incrementLikes();
+
+            $message = sprintf('%s a aimé votre commentaire.', $user->getUsername());
+            $notificationService->createNotification($commentaire->getAuteur(), Notification::TYPE_LIKE, $message);
+        }
+
+        $entityManager->flush();
+        return new JsonResponse(['likes' => $commentaire->getLikes()]);
     }
 }

@@ -72,6 +72,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $notifications;
 
+    #[ORM\ManyToMany(targetEntity: Commentaire::class, mappedBy: 'likedBy')]
+    private Collection $likedCommentaires;
+
     public function __construct()
     {
         $this->publications = new ArrayCollection();
@@ -81,6 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->likedPublications = new ArrayCollection();
         $this->conversations = new ArrayCollection();
         $this->notifications = new ArrayCollection();
+        $this->likedCommentaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -401,6 +405,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($notification->getUser() === $this) {
                 $notification->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getLikedCommentaires(): Collection
+    {
+        return $this->likedCommentaires;
+    }
+
+    public function addLikedCommentaire(Commentaire $likedCommentaire): static
+    {
+        if (!$this->likedCommentaires->contains($likedCommentaire)) {
+            $this->likedCommentaires->add($likedCommentaire);
+            $likedCommentaire->addLikedBy($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLikedCommentaire(Commentaire $likedCommentaire): static
+    {
+        if ($this->likedCommentaires->removeElement($likedCommentaire)) {
+            $likedCommentaire->removeLikedBy($this);
         }
 
         return $this;
