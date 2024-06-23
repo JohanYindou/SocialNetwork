@@ -10,12 +10,11 @@
 		<!-- Utilisation des classes "container-fluid", "d-flex", "flex-column" et "vh-100" -->
 		<div class="row flex-grow-1">
 			<!-- Utilisation de la classe "flex-grow-1" pour que la row prenne toute la hauteur disponible -->
-
 			<!-- Contenu de la première colonne (sidebar) -->
 			{% include 'components/sidebar.html.twig' %}
-
 			<!-- Contenu de la deuxième colonne -->
-				<div class="col-md-6 offset-md-3 main-content p-2 overflow-auto"> <div class="card mb-3">
+			<div class="col-md-6 offset-md-3 main-content p-2 overflow-auto">
+				<div class="card mb-3">
 					<div class="card-body">
 						<div class="d-flex align-items-start">
 							<a href="{{ path('app_user_profil', {id: comment.auteur.id}) }}">
@@ -66,31 +65,30 @@
 
 	<script>
 		document.querySelectorAll('.like-comment-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const commentId = button.dataset.id;
-                fetch(`/like/comment/${commentId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => response.json()).then(data => {
-                    if (data.likes !== undefined) {
-                        button.querySelector('span').textContent = data.likes;
-                        const icon = button.querySelector('i');
-                        icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
-                    }
-                });
-            });
-        });
-		function copyToClipboard(elementId) {
-            var copyText = document.getElementById(elementId);
-            copyText.select();
-            copyText.setSelectionRange(0, 99999); // For mobile devices
-            document.execCommand("copy");
-            alert("Lien copié: " + copyText.value);
-        }
+button.addEventListener('click', () => {
+const commentId = button.dataset.id;
+fetch (`/like/comment/${commentId}`, {
+method: 'POST',
+headers: {
+'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+'Content-Type': 'application/json'
+}
+}).then(response => response.json()).then(data => {
+if (data.likes !== undefined) {
+button.querySelector('span').textContent = data.likes;
+const icon = button.querySelector('i');
+icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+}
+});
+});
+});
+function copyToClipboard(elementId) {
+var copyText = document.getElementById(elementId);
+copyText.select();
+copyText.setSelectionRange(0, 99999); // For mobile devices
+document.execCommand("copy");
+alert("Lien copié: " + copyText.value);
+}
 	</script>
 
 {% endblock %}
-

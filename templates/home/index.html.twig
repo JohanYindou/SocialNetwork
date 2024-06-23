@@ -26,10 +26,9 @@
 											<div>
 												<p class="mb-0 fw-bold">{{ publication.auteur.nom }}</p>
 												<p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
-												<small class="text-muted">Posté le
-														{{ publication.createdAt|date('d/m/Y') }}
-														à
-														{{ publication.createdAt|date('H:i') }}</small>
+											</div>
+											<div class="ms-auto text-muted ms-3">
+												<small>{{ publication.createdAt|date('d/m/Y H:i') }}</small>
 											</div>
 										</div>
 									</a>

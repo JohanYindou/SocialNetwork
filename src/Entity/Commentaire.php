@@ -34,6 +34,9 @@ class Commentaire
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'likedCommentaires')]
     private Collection $likedBy;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updated_at = null;
+
     public function __construct()
     {
         $this->likedBy = new ArrayCollection();
@@ -143,6 +146,18 @@ class Commentaire
     public function decrementLikes(): self
     {
         $this->likes--;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): static
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }
