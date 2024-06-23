@@ -60,7 +60,7 @@
 										</div>
 										<div class="mx-4">
 											<div class="dropdown">
-												<button class="btn btn-link p-0 dropdown-toggle" style="text-decoration: none;" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+												<button class="btn btn-link p-0 dropdown-toggle text-decoration-none" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 													<i class="bi bi-share"></i>
 													Partager
 												</button>
@@ -73,7 +73,6 @@
 													</li>
 												</ul>
 											</div>
-										</div>
 									</div>
 								</a>
 							</div>
@@ -108,11 +107,13 @@ icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi 
 });
 });
 
-function copyToClipboard(elementId) {
-var copyText = document.getElementById(elementId);
+function copyToClipboard() {
+var copyText = document.getElementById('shareLink');
 copyText.select();
 copyText.setSelectionRange(0, 99999); // For mobile devices
+
 document.execCommand("copy");
+
 alert("Lien copié: " + copyText.value);
 }
 	</script>
