@@ -23,7 +23,13 @@
 				</div>
 				<div class="card mt-3">
 					<div class="card-body">
-						<h5 class="card-title">Publications</h5>
+						<ul class="nav nav-tabs">
+							<li class="nav-item">
+								<a class="nav-link active">
+									<h5 class="card-title m-0">Publications</h5>
+								</a>
+							</li>
+						</ul>
 						{% for publication in user.publications %}
 							<div class="card mb-3">
 								<div class="card-header">
@@ -62,7 +68,6 @@
 										<div class="dropdown">
 											<button class="btn btn-link p-0 dropdown-toggle text-decoration-none" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 												<i class="bi bi-share"></i>
-												Partager
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="shareDropdown">
 												<li>
