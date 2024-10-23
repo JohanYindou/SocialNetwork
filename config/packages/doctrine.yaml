@@ -24,8 +24,6 @@ doctrine:
                 alias: App
         controller_resolver:
             auto_mapping: true
-    migrations:
-        transactional: false
 
 when@test:
     doctrine:
