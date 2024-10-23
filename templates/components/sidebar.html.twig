@@ -1,12 +1,13 @@
 {# Version grand écran (md et plus) #}
-<div class="col-md-3 d-none d-md-block d-flex flex-column p-2 bg-light position-fixed top-0 sidebar">
-	<ul class="list-unstyled flex-grow-1 p-2">
-		<li class="mb-2 p-3 d-flex justify-content-center">
-			<img src="/uploads/medias/Logo_SocialNetwork.png" style="max-width: 45%; height: auto;" alt="Logo de SocialNetwork">
+<div class="col-md-3 d-none d-md-block d-flex flex-column bg-light position-fixed top-0 overflow-auto sidebar">
+
+	<ul class="list-unstyled flex-grow-1 p-2 mb-2">
+		<li class="mb-2 p-2 d-flex justify-content-center">
+			<img src="/uploads/medias/Logo_SocialNetwork.png" style="max-width: 35%; height: auto;" alt="Logo de SocialNetwork">
 		</li>
 
 		{% if app.request.headers.get('referer') %}
-			<li class="mb-2 p-3 d-flex justify-content-center">
+			<li class="mb-2 d-flex justify-content-center">
 				<a href="javascript:history.back()" class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
 					style="width: 10%; height: auto;">
 					<i class="bi bi-arrow-left"></i>
@@ -16,14 +17,14 @@
 		
 
 		<a href="{{ path('app_home') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+			<li class="border rounded mb-1 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-house-door-fill me-2"></i>
 				Home
 			</li>
 		</a>
 
 		<a href="{{ path('app_recherche') }}" class="text-decoration-none">
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+			<li class="border rounded mb-1 p-3 d-flex align-items-center bg-white shadow-sm">
 				<i class="bi bi-search me-2"></i>
 				Recherche
 			</li>
@@ -31,7 +32,7 @@
 
 		{% if is_granted('IS_AUTHENTICATED_FULLY') and 'ROLE_ADMIN' in app.user.roles %}
 			<a href="{{ path('admin') }}" class="text-decoration-none">
-				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<li class="border rounded mb-1 p-3 d-flex align-items-center bg-white shadow-sm">
 					<i class="bi bi-speedometer2 me-2"></i>
 					Dashboard
 				</li>
@@ -40,31 +41,31 @@
 
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 			<a href="{{ path('app_notifications') }}" class="text-decoration-none">
-				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<li class="border rounded mb-1 p-3 d-flex align-items-center bg-white shadow-sm">
 					<i class="bi bi-bell-fill me-2"></i>
 					Notifications
 				</li>
 			</a>
 			<a href="{{ path('conversation_index') }}" class="text-decoration-none">
-				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<li class="border rounded mb-1 p-3 d-flex align-items-center bg-white shadow-sm">
 					<i class="bi bi-envelope-fill me-2"></i>
 					Messages
 				</li>
 			</a>
 			<a href="{{ path('app_profil') }}" class="text-decoration-none">
-				<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+				<li class="border rounded mb-1 p-3 d-flex align-items-center bg-white shadow-sm">
 					<i class="bi bi-person-fill me-2"></i>
 					Profil
 				</li>
 			</a>
-			<li class="border rounded mb-2 p-3 d-flex align-items-center bg-white shadow-sm">
+			<li class="rounded mb-1 p-2 d-flex align-items-center ">
 				<a class="btn btn-primary w-100" href="{{ path('app_new_post') }}">Poster</a>
 			</li>
 		{% endif %}
 
-		<li class="border rounded mb-2 p-3 bg-white shadow-sm">
+		<li class="border rounded p-2 bg-white shadow-sm">
 			<div class="row align-items-center">
-				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 					<div class="col-auto">
 						<img src="{{ app.user.ProfilPicture }}" alt="Photo de profil" class="rounded-circle" style="width: 50px; height: 50px;">
 					</div>
@@ -76,9 +77,9 @@
 									<p class="mb-0 text-muted">@{{ app.user.username }}</p>
 								</div>
 							</a>
-							<ul class="dropdown-menu" aria-labelledby="dropdownUser">
+							<ul class="dropdown-menu bg-danger text-center " aria-labelledby="dropdownUser">
 								<li>
-									<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
+									<a class="dropdown-item bg-danger text-white" href="{{ path('app_logout') }}">Déconnexion</a>
 								</li>
 							</ul>
 						</div>
@@ -162,7 +163,7 @@
 						<a href="{{ path('app_login') }}" class="nav-link btn btn-primary">Se connecter</a>
 					</li>
 				{% endif %}
-				{% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 					<li class="nav-item dropdown">
 						<a class="nav-link text-primary dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="{{ app.user.ProfilPicture }}" alt="Photo de profil" class="rounded-circle" style="width: 32px; height: 32px;">
@@ -170,7 +171,7 @@
 						</a>
 						<ul class="dropdown-menu text-primary" aria-labelledby="navbarDropdown">
 							<li>
-								<a class="dropdown-item text-primary" href="{{ path('app_logout') }}">Déconnexion</a>
+								<a class="dropdown-item  text-primary" href="{{ path('app_logout') }}">Déconnexion</a>
 							</li>
 						</ul>
 					</li>
