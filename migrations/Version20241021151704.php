@@ -70,4 +70,9 @@ final class Version20241021151704 extends AbstractMigration
         $this->addSql('DROP TABLE user_publication');
         $this->addSql('DROP TABLE messenger_messages');
     }
+
+    public function isTransactional(): bool
+    {
+        return false; // Désactiver les transactions pour cette migration
+    }
 }
