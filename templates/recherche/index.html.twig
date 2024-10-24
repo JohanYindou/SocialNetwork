@@ -20,7 +20,7 @@
 						<p>Aucun résultat trouvé pour le terme de recherche "{{ searchData }}".</p>
 					{% else %}
 						<p>Il y a
-							{{ publications|length }}
+							{{ totalResults }}
 							publications correspondantes</p>
 						{% for publication in publications %}
 							<div class="card mb-3 mt-3">

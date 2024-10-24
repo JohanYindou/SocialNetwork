@@ -24,7 +24,7 @@ class RechercheController extends AbstractController
         $searchData = New SearchData(); 
         $form = $this->createForm(RechercheType::class, $searchData);
         $form->handleRequest($request);
-
+        $totalResults = 0;
 
         $pagination = $paginator->paginate(
             [], // ou une valeur par défaut appropriée
@@ -33,6 +33,9 @@ class RechercheController extends AbstractController
         );
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $results = $publicationRepository->findBySearchTerm($searchData->q);
+            $totalResults = count($results);
+            
             $pagination = $paginator->paginate(
                 $publicationRepository->findBySearchTerm($searchData->q),
                 $request->query->getInt('page', 1),
@@ -43,6 +46,7 @@ class RechercheController extends AbstractController
         return $this->render('recherche/index.html.twig', [
             'publications' => $pagination,
             'searchData' => $searchData->q,
+            'totalResults' => $totalResults,
             'form' => $form->createView(),
         ]);
     }
