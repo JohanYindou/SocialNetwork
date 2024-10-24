@@ -34,13 +34,11 @@
 									<h5 class="card-title m-0">Comments</h5>
 								</a>
 							</li>
-                            {#
 							<li class="nav-item">
-								<a href="{{ path('') }}" class="nav-link">
+								<a href="{{ path('app_user_profil-likes', {id: user.id}) }}" class="nav-link">
 									<h5 class="card-title m-0">Likes</h5>
 								</a>
 							</li> 
-                            #}
 						</ul>
                         {% for comment in comments %}
                             <div class="card mb-3">
@@ -90,7 +88,7 @@
                                 </div>
                             </div>
 						{% else %}
-							<p>Aucune commentaire.</p>
+							<<p class="text-center mt-2 p-2">L'utilisateur n'as pas encore de commentaire.</p>
 						{% endfor %} 
 					</div>
 				</div>

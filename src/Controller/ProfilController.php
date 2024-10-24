@@ -161,20 +161,24 @@ class ProfilController extends AbstractController
         ]);
     }
     
-    #[Route('/profile/{id}/likes', name:'app_user_profil-likes')]
+    #[Route('/profil/{id}/likes', name:'app_user_profil-likes')]
     public function userLikes(
         UserRepository $userRepository,
         int $id
     ) : Response
     {
-
         $user = $userRepository->findById($id);
         if(!$user){
             throw $this->createNotFoundException('Utilisateur non trouvé');
         }
 
+        $likedCommentaires = $user->getLikedCommentaires($user);
+        $likedPublications = $user->getLikedPublications($user);
+        
         return $this->render('profil/likes/user-profil_likes.html.twig', [
             'user' => $user,
+            'commentaires' => $likedCommentaires,
+            'publications' => $likedPublications,
         ]);
     }
 

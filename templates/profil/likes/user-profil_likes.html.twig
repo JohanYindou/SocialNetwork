@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil de
+	{{ user.nom }}
+{% endblock %}
+{% block body %}
+
+	<div class="container-fluid d-flex flex-column vh-100 p-2">
+		<div class="row flex-grow-1">
+			{% include 'components/sidebar.html.twig' %}
+			<div class="col-md-6 offset-md-3 main-content d-flex flex-column p-2 overflow-auto">
+				<div class="col-md-12 d-flex justify-content-center align-items-center mt-3">
+					<img src="{{ user.profilPicture }}" class="rounded-circle" style="width: 150px; height: 150px;">
+				</div>
+				<div class="card mt-3">
+					<div class="card-body text-center">
+						<h5 class="card-title">{{ user.nom }}</h5>
+						<p class="card-text">{{ user.username }}</p>
+						<p class="card-text">{{ user.description ? user.description : 'Aucune description' }}</p>
+						<p class="card-text">A rejoint le
+							{{ user.createdAt ? user.createdAt|date('l, F j, Y') : 'Non disponible' }}</p>
+					</div>
+				</div>
+				<div class="card mt-3">
+					<div class="card-body">
+						<ul class="nav nav-tabs">
+							<li class="nav-item">
+								<a class="nav-link ">
+									<h5 class="card-title m-0">Publications</h5>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a href="{{ path('app_user_profil-comments', {id: user.id}) }}" class="nav-link">
+									<h5 class="card-title m-0">Comments</h5>
+								</a>
+							</li>
+                            <li class="nav-item">
+								<a href="{{ path('app_user_profil-likes', {id: user.id}) }}" class="nav-link active">
+									<h5 class="card-title m-0">Likes</h5>
+								</a>
+							</li> 
+						</ul>
+                        {% for publication in publications %}
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <a href="{{ path('app_user_profil', {id: publication.auteur.id}) }}" class="text-decoration-none text-dark">
+                                        <div class="d-flex align-items-center">
+                                            <img src="{{ publication.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle me-2" style="width: 50px; height: 50px;">
+                                            <div>
+                                                <p class="mb-0 fw-bold">{{ publication.auteur.nom }}</p>
+                                                <p class="mb-0 text-muted">@{{ publication.auteur.username }}</p>
+                                            </div>
+                                            <div class="ms-auto text-muted ms-3">
+                                                <small>{{ publication.createdAt|date('d/m/Y H:i') }}</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <a href="{{ path('app_post', {'id': publication.id}) }}" class="text-decoration-none text-dark">
+                                    <div class="card-body">
+                                        <p>{{ publication.contenu }}</p>
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            {% if publication.media %}
+                                                <img class="rounded img-fluid" src="{{ publication.media }}" alt="Publication media">
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <a href="#" class="btn btn-link p-0 text-decoration-none">
+                                                <i class="bi bi-chat"></i>
+                                                <span>{{ publication.commentaires|length }}</span>
+                                            </a>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ publication.id }}">
+                                                <i class="bi {{ publication.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                                <span>{{ publication.likes }}</span>
+                                            </button>
+                                        </div>
+                                        <div class="dropdown">
+                                            <button class="btn btn-link p-0 dropdown-toggle text-decoration-none" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-share"></i>
+                                            </button>
+                                            <ul class="dropdown-menu p-2 shadow" aria-labelledby="shareDropdown">
+                                                <li>
+                                                    <input type="text" class="form-control" id="shareLink" value="{{ url('app_post', {'id': publication.id}) }}" readonly>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" onclick="copyToClipboard()">Copier le lien</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        {% endfor %}
+
+                        {% for commentaire in commentaires %}
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-start">
+                                        <a href="{{ path('app_user_profil', {id: commentaire.auteur.id}) }}">
+                                            <img src="{{ commentaire.auteur.ProfilPicture }}" alt="Avatar" class="rounded-circle" style="width: 50px; height: 50px;">
+                                        </a>
+                                        <div class="ms-3 w-100">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>{{ commentaire.auteur.nom }}</strong>
+                                                    <span class="text-muted">@{{ commentaire.auteur.username }}</span>
+                                                </div>
+                                                <div class="text-muted">
+                                                    <small>{{ commentaire.createdAt|date('d/m/Y H:i') }}</small>
+                                                </div>
+                                            </div>
+                                            <p class="mt-2">{{ commentaire.contenu }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex justify-content-start">
+                                    <div class="mx-4">
+                                        <button class="btn btn-link like-btn p-0 border-0 bg-transparent text-decoration-none" data-id="{{ commentaire.publication.id }}">
+                                            <i class="bi {{ commentaire.likedByCurrentUser(app.user) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                            <span>{{ commentaire.likes }}</span>
+                                        </button>
+                                    </div>
+                                    <div class="mx-4">
+                                        <div class="dropdown">
+                                            <button class="btn btn-link p-2 dropdown-toggle" style="text-decoration: none;" type="button" id="shareCommentDropdown{{ commentaire.id }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-share"></i>
+                                                Partager
+                                            </button>
+                                            <ul class="dropdown-menu p-2 shadow" aria-labelledby="shareCommentDropdown{{ commentaire.id }}">
+                                                <li>
+                                                    <input type="text" class="form-control" id="shareCommentLink{{ commentaire.id }}" value="{{ url('app_comment', {'id': commentaire.id}) }}" readonly>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" onclick="copyToClipboard('shareCommentLink{{ commentaire.id }}')">Copier le lien</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {% if publications is empty and commentaires is empty %}
+                            <p class="text-center mt-2 p-2">L'utilisateur n'as pas encore de like.</p>
+                        {% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function copyToClipboard() {
+var copyText = document.getElementById('shareLink');
+copyText.select();
+copyText.setSelectionRange(0, 99999); // For mobile devices
+
+document.execCommand("copy");
+
+alert("Lien copié: " + copyText.value);
+}
+
+document.querySelectorAll('.like-btn').forEach(button => {
+button.addEventListener('click', () => {
+const publicationId = button.dataset.id;
+
+fetch (`/like/${publicationId}`, {
+method: 'POST',
+headers: {
+'X-CSRF-TOKEN': '{{ csrf_token('like') }}',
+'Content-Type': 'application/json'
+}
+}).then(response => response.json()).then(data => {
+if (data.likes !== undefined) {
+button.querySelector('span').textContent = data.likes;
+const icon = button.querySelector('i');
+icon.className = icon.className.includes('bi-heart-fill') ? 'bi bi-heart' : 'bi bi-heart-fill';
+}
+});
+});
+});
+	</script>
+{% endblock %}
+
