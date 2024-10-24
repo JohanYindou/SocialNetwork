@@ -141,6 +141,43 @@ class ProfilController extends AbstractController
         ]);
     }
 
+    #[Route('/profile/{id}/comments', name:'app_user_profil-comments')]
+    public function userComments(
+        UserRepository $userRepository,
+        CommentaireRepository $commentaireRepository,
+        int $id
+    ) : Response
+    {
+
+        $user = $userRepository->findById($id);
+        if(!$user){
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+
+        $comments = $commentaireRepository->findBy(['auteur' => $user]);
+        return $this->render('profil/comments/user-profil_comments.html.twig', [
+            'user' => $user,
+            'comments' => $comments,
+        ]);
+    }
+    
+    #[Route('/profile/{id}/likes', name:'app_user_profil-likes')]
+    public function userLikes(
+        UserRepository $userRepository,
+        int $id
+    ) : Response
+    {
+
+        $user = $userRepository->findById($id);
+        if(!$user){
+            throw $this->createNotFoundException('Utilisateur non trouvé');
+        }
+
+        return $this->render('profil/likes/user-profil_likes.html.twig', [
+            'user' => $user,
+        ]);
+    }
+
 
     #[Route('/profil-edit', name: 'app_profil_edit')]
     public function edit(
